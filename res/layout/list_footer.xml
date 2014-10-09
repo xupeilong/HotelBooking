@@ -2,21 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical"
     android:orientation="horizontal" >
-    <TextView 
-        android:text="筛选"
-        style="@style/main_footbar_radio"/>
-    <TextView 
-        android:text="筛选"
-        style="@style/main_footbar_radio"/>
-    <TextView 
-        android:text="筛选"
-        style="@style/main_footbar_radio"/>
-    <TextView 
-        android:text="筛选"
-        style="@style/main_footbar_radio"/>
-    
-    
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+        
+        <TextView
+            android:id="@+id/text_header_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="读取中"
+            android:textSize="20sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/text_header_hint"
+            android:layout_centerVertical="true"
+            >
+            <ProgressBar
+                android:id="@+id/progress_bar_header"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:visibility="invisible" 
+                android:layout_centerInParent="true"/>
+        </RelativeLayout>
+
+        
+    </RelativeLayout>
 
 </LinearLayout>

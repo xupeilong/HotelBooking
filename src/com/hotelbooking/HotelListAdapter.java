@@ -22,6 +22,11 @@ public class HotelListAdapter extends BaseAdapter{
 		this.context = context;
 		this.hotels = hotels;
 	}
+	
+	public void setHotels(List<Hotel> hotels)
+	{
+		this.hotels = hotels;
+	}
 
 	@Override
 	public int getCount() {

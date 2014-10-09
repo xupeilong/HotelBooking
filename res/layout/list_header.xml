@@ -7,13 +7,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+        
+        <TextView
+            android:id="@+id/text_header_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="下拉可以刷新"
+            android:textSize="20sp" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/text_header_hint"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="30dp" >
+            >
 
             <ImageView
                 android:id="@+id/image_header_arrow"
@@ -37,15 +47,7 @@
                 android:layout_centerInParent="true"/>
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/text_header_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center"
-            android:padding="10dp"
-            android:text="下拉可以刷新"
-            android:textSize="20sp" />
+        
     </RelativeLayout>
 
 </LinearLayout>

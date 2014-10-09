@@ -41,7 +41,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <com.hotelbooking.ui.AutoListView
+    <com.hotelbooking.ui.LoadMoreListView
         android:id="@+id/list_hotel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -49,6 +49,6 @@
         android:background="#ffffff"
         android:divider="@drawable/divider_grey"
         android:dividerHeight="1dp" >
-    </com.hotelbooking.ui.AutoListView>
+    </com.hotelbooking.ui.LoadMoreListView>
 
 </RelativeLayout>

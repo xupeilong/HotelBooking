@@ -4,78 +4,73 @@ import com.hotelbooking.R;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.MeasureSpec;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
-import android.view.animation.Transformation;
+import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewAnimator;
 
-public class AutoListView extends ListView{
+public class PullToRefreshListView extends ListView{
 
+	// Views
 	private Context context;
 	private View rlHeader;
 	private TextView tvHint;
 	private ImageView imgArrow;
 	private ProgressBar pgbCircle;
 	private int headerViewHeight;
-	private OnLoadMoreListener onLoadMoreListener = null;
+	private OnRefreshListener onRefreshListener = null;
 	
-	public AutoListView(Context context, AttributeSet attrs,
+	// Constructors.
+	public PullToRefreshListView(Context context, AttributeSet attrs,
 	         int defStyle) {
 	     super(context, attrs, defStyle);
 	     this.context = context;
 	     init(context);
 	}
-	public AutoListView(Context context, AttributeSet attrs) {
+	public PullToRefreshListView(Context context, AttributeSet attrs) {
 	     super(context, attrs);
 	     this.context = context;
 	     init(context);
 	}
-
 	
-	public AutoListView(Context context) {
+	public PullToRefreshListView(Context context) {
 		super(context);
 		this.context = context;
 		init(context);
 	}
 	
+	// Animations
 	private Animation rotateDownAnimation;
 	private Animation rotateUpAnimation;
-	private boolean isArrowRotating = false;
-	private boolean isArrowStateUp = false;
+	private Animation hideAnimation;
 	
+	
+	// Init views and animations.
 	private void init(Context context)
 	{
 		super.setOnScrollListener(new OnMoreLvScrollListener(context));
 		LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		rlHeader = inflater.inflate(R.layout.footer_hotel_list, null);
+		rlHeader = inflater.inflate(R.layout.list_header, null);
 		tvHint = (TextView) rlHeader.findViewById(R.id.text_header_hint);
 		imgArrow = (ImageView) rlHeader.findViewById(R.id.image_header_arrow);
 		pgbCircle = (ProgressBar) rlHeader.findViewById(R.id.progress_bar_header);
-
 		measureHeaderView(rlHeader);
 		headerViewHeight = rlHeader.getMeasuredHeight();
 		rlHeader.invalidate();
-		
 		setHeaderPadding(-headerViewHeight);
 		addHeaderView(rlHeader);
 		
@@ -134,36 +129,41 @@ public class AutoListView extends ListView{
 					imgArrow.startAnimation(rotateDownAnimation);
 			}
 		});
+		
+		hideAnimation = new ScaleAnimation(1f, 0f, 1f, 0f,
+				ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
+				ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+		hideAnimation.setDuration(150);
+		hideAnimation.setFillAfter(true);
 	}
 	
-	public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener)
+	public interface OnRefreshListener
 	{
-		this.onLoadMoreListener = onLoadMoreListener;
+		public void onLoadMore();
+	}
+	
+	public void setOnLoadMoreListener(OnRefreshListener onRefreshListener)
+	{
+		this.onRefreshListener = onRefreshListener;
 	}
 	
 	public void onRefreshComplete()
 	{
 		changeState(State.ORIGIN);
 	}
-	 
 
-	
-	public interface OnLoadMoreListener
-	{
-		public void onLoadMore();
-	}
-	
-	
-	private boolean isOnTop = true;
+	// Motions related.
+	private boolean isArrowRotating = false;
+	private boolean isArrowStateUp = false;
+	private boolean isListOnTop = true;
 	private int currentState = State.ORIGIN;
-	private int downPosY;
+	private int lastDownPosY;
 	private int currentPosY;
-	private int pullDis;
-	private int padding;
-	private boolean listEnable = true;
+	private int pullDisY;
+	private int currentPadding;
+	private boolean islistMotionEnable = true;
 	private boolean isAnimating = false;
-	private static final int RATIO = 2;
-	
+	private static final int DIS_RATIO = 2;
 	
 	private class State
 	{
@@ -174,28 +174,28 @@ public class AutoListView extends ListView{
 	}
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (!isOnTop || currentState == State.REFRESHING || isAnimating)
+		if (!isListOnTop || currentState == State.REFRESHING || isAnimating)
 			return super.onTouchEvent(ev);
 		int y = (int) ev.getRawY();
 		int action = ev.getAction();
 		switch (action){
 		case MotionEvent.ACTION_DOWN:
-			downPosY = y;
+			lastDownPosY = y;
 			break;
 		case MotionEvent.ACTION_MOVE:
-			if (downPosY < 0)
+			if (lastDownPosY < 0)
 				break;
 			currentPosY = y;
-			pullDis = (currentPosY - downPosY) / RATIO;
-			if (currentState == State.ORIGIN && pullDis > 0)
+			pullDisY = (currentPosY - lastDownPosY) / DIS_RATIO;
+			if (currentState == State.ORIGIN && pullDisY > 0)
 				changeState(State.PULL_TO_REFRESH);
-			else if (currentState == State.PULL_TO_REFRESH && pullDis > headerViewHeight)
+			else if (currentState == State.PULL_TO_REFRESH && pullDisY > headerViewHeight)
 				changeState(State.RELEASE_TO_REFRESH);
-			else if (currentState == State.RELEASE_TO_REFRESH && pullDis < 0)
+			else if (currentState == State.RELEASE_TO_REFRESH && pullDisY < 0)
 				changeState(State.ORIGIN);
-			else if (currentState == State.RELEASE_TO_REFRESH && pullDis < headerViewHeight)
+			else if (currentState == State.RELEASE_TO_REFRESH && pullDisY < headerViewHeight)
 				changeState(State.PULL_TO_REFRESH);
-			setHeaderPadding(- headerViewHeight + pullDis);
+			setHeaderPadding(- headerViewHeight + pullDisY);
 			break;
 		case MotionEvent.ACTION_UP:
 			if (currentState == State.PULL_TO_REFRESH)
@@ -207,7 +207,7 @@ public class AutoListView extends ListView{
 		default:
 				break;
 		}
-		if (listEnable)
+		if (islistMotionEnable)
 			return super.onTouchEvent(ev);
 		else
 			return true;
@@ -215,16 +215,20 @@ public class AutoListView extends ListView{
 	
 	private void setHeaderPadding(int padding)
 	{
-		this.padding = padding;
+		this.currentPadding = padding;
 		rlHeader.setPadding(0, padding, 0, 0);
 	}
 	
-	
-	
 	private void resetHeader(final int toPadding)
 	{
-		ValueAnimator va = ValueAnimator.ofInt(padding, toPadding);
+		resetHeader(toPadding, 0);
+	}
+	
+	private void resetHeader(final int toPadding, int delay)
+	{
+		ValueAnimator va = ValueAnimator.ofInt(currentPadding, toPadding);
 	    va.setDuration(150);
+	    va.setStartDelay(delay);
 	    va.setInterpolator(new AccelerateDecelerateInterpolator());
 	    va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 	        public void onAnimationUpdate(ValueAnimator animation) {
@@ -269,10 +273,17 @@ public class AutoListView extends ListView{
 		if (state == State.ORIGIN)
 		{
 			pgbCircle.setVisibility(View.INVISIBLE);
-			imgArrow.setVisibility(View.VISIBLE);
-			listEnable = true;
-			tvHint.setText("下拉可以刷新");
-			resetHeader(-headerViewHeight);
+			islistMotionEnable = true;
+			if (lastState == State.REFRESHING)
+			{
+				tvHint.setText("刷新完成");
+				pgbCircle.startAnimation(hideAnimation);
+				resetHeader(-headerViewHeight, 300);
+			}
+			else
+			{
+				resetHeader(-headerViewHeight);
+			}
 		}
 		else if (state == State.REFRESHING)
 		{
@@ -281,15 +292,16 @@ public class AutoListView extends ListView{
 			imgArrow.setVisibility(View.INVISIBLE);
 			imgArrow.clearAnimation();
 			isArrowRotating = false;
-			downPosY = -1;
-			listEnable = true;
-			tvHint.setText("刷新中");
+			lastDownPosY = -1;
+			islistMotionEnable = true;
+			tvHint.setText("正在刷新");
 			resetHeader(0);
-			onLoadMoreListener.onLoadMore();
+			onRefreshListener.onLoadMore();
 		}
 		else if (state == State.PULL_TO_REFRESH)
 		{
-			listEnable = false;
+			imgArrow.setVisibility(View.VISIBLE);
+			islistMotionEnable = false;
 			tvHint.setText("下拉可以刷新");
 			isArrowStateUp = false;
 			if (!isArrowRotating && lastState == State.RELEASE_TO_REFRESH)
@@ -297,7 +309,7 @@ public class AutoListView extends ListView{
 		}
 		else if (state == State.RELEASE_TO_REFRESH)
 		{
-			listEnable = false;
+			islistMotionEnable = false;
 			tvHint.setText("释放立即刷新");
 			isArrowStateUp = true;
 			if (!isArrowRotating && lastState == State.PULL_TO_REFRESH)
@@ -320,9 +332,9 @@ public class AutoListView extends ListView{
 		@Override
 		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 			if (firstVisibleItem == 0)
-				isOnTop = true;
+				isListOnTop = true;
 			else 
-				isOnTop = false;
+				isListOnTop = false;
 		}
 
 		@Override

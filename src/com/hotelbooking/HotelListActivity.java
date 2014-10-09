@@ -3,8 +3,10 @@ package com.hotelbooking;
 import java.util.List;
 
 import com.hotelbooking.model.Hotel;
-import com.hotelbooking.ui.AutoListView;
-import com.hotelbooking.ui.AutoListView.OnLoadMoreListener;
+import com.hotelbooking.ui.LoadMoreListView;
+import com.hotelbooking.ui.LoadMoreListView.OnLoadMoreListener;
+import com.hotelbooking.ui.PullToRefreshListView;
+import com.hotelbooking.ui.PullToRefreshListView.OnRefreshListener;
 
 import android.os.Bundle;
 import android.app.ActionBar;
@@ -16,13 +18,15 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public class HotelListActivity extends Activity {
 
-	private AutoListView listView;
+	private LoadMoreListView listView;
 	private HotelListAdapter hotelListAdapter;
+	private List<Hotel> hotels;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,26 +44,48 @@ public class HotelListActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		
-		listView = (AutoListView) findViewById(R.id.list_hotel);
+		listView = (LoadMoreListView) findViewById(R.id.list_hotel);
 		listView.setOverScrollMode(ListView.OVER_SCROLL_NEVER);
+		startGettingHotelListData();
 		listView.setOnLoadMoreListener(new OnLoadMoreListener() {
 			
 			@Override
 			public void onLoadMore() {
-//				listView.onRefreshComplete();
+				// TODO Auto-generated method stub
+				
 			}
 		});
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
-
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				if (arg2 == 1)
-					listView.onRefreshComplete();
+				// TODO Auto-generated method stub
+				int count = listView.getAdapter().getCount();
+				Toast.makeText(HotelListActivity.this, "" + count, Toast.LENGTH_LONG).show();
+				if (arg2 == count - 1)
+				{
+					Hotel hotel = new Hotel();
+					hotel.setName("new沛龙大酒店");
+					hotel.setScore((float) 5.0);
+					hotel.setPrice(2999);
+					hotel.setLevel("牛逼型酒店");
+					hotel.setDiscoutn(true);
+					hotel.setArea("海淀、中关村地区");
+					hotel.setDistance((float) 213);
+					if (count < 15)
+					{
+						hotels.add(hotel);
+						hotelListAdapter.notifyDataSetChanged();
+						listView.onLoadComplete();
+					}
+					else
+					{
+						listView.onLoadEnd();
+					}
+				}
 			}
-			
 		});
-		startGettingHotelListData();
 
 	}
 
@@ -69,6 +95,7 @@ public class HotelListActivity extends Activity {
 	}
 
 	public void onHotelListDataReady(List<Hotel> hotels) {
+		this.hotels = hotels;
 		hotelListAdapter = new HotelListAdapter(this, hotels);
 		listView.setAdapter(hotelListAdapter);
 	}
