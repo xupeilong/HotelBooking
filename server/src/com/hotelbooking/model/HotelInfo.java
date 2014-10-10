@@ -21,6 +21,9 @@ public class HotelInfo {
 	@Column(name = "level")
 	private String level;
 	
+	@Column(name = "image_path")
+	private String imagePath;
+	
 	public HotelInfo() {
 	}
 
@@ -56,6 +59,13 @@ public class HotelInfo {
 		this.level = level;
 	}
 	
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
+	}
 	
 	
 }

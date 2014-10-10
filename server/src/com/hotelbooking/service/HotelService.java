@@ -34,6 +34,7 @@ public class HotelService {
 				String level = info.getLevel();
 				int price = hotelDAO.getLowestPrice(id);
 				int distance = 100;
+				String imagePath = info.getImagePath();
 				JSONObject obj = new JSONObject();
 				obj.put("id", id);
 				obj.put("name", name);
@@ -41,6 +42,7 @@ public class HotelService {
 				obj.put("level", level);
 				obj.put("price", price);
 				obj.put("distance", distance);
+				obj.put("image_path", imagePath);
 				jsonArray.add(obj);
 			}
 		return jsonArray.toString();

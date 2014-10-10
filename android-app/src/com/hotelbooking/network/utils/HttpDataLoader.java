@@ -1,4 +1,4 @@
-package com.hotelbooking;
+package com.hotelbooking.network.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +22,7 @@ import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HTTP;
+
 
 
 import android.app.Activity;

@@ -1,4 +1,4 @@
-package com.hotelbooking;
+package com.hotelbooking.network.utils;
 
 import org.apache.http.NameValuePair;
 

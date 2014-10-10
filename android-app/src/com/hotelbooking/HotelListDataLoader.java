@@ -12,6 +12,9 @@ import android.content.Context;
 import android.provider.SyncStateContract.Constants;
 
 import com.hotelbooking.model.Hotel;
+import com.hotelbooking.network.utils.HttpDataHandler;
+import com.hotelbooking.network.utils.HttpDataLoader;
+import com.hotelbooking.network.utils.Parameter;
 import com.hotelbooking.utils.Const;
 
 
@@ -50,7 +53,8 @@ public class HotelListDataLoader implements HttpDataHandler{
 						obj.getString("area"),
 						obj.getString("level"),
 						obj.getInt("price"),
-						obj.getInt("distance"));
+						obj.getInt("distance"),
+						obj.getString("image_path"));
 				hotels.add(hotel);
 			}
 		} catch (JSONException e) {

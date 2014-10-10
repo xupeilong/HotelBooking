@@ -8,8 +8,9 @@ public class Hotel {
 	private String level;
 	private int price;
 	private int distance;
+	private String image_path;
 	
-	public Hotel(int id, String name, String area, String level, int price, int distance) {
+	public Hotel(int id, String name, String area, String level, int price, int distance, String image_path) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -17,6 +18,7 @@ public class Hotel {
 		this.level = level;
 		this.price = price;
 		this.distance = distance;
+		this.image_path = image_path;
 	}
 
 	public int getId() {
@@ -66,6 +68,15 @@ public class Hotel {
 	public void setDistance(int distance) {
 		this.distance = distance;
 	}
+
+	public String getImage_path() {
+		return image_path;
+	}
+
+	public void setImage_path(String image_path) {
+		this.image_path = image_path;
+	}
+	
 	
 	
 }

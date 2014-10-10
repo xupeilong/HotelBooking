@@ -6,6 +6,8 @@ import java.util.List;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.HotelInfo;
 import com.hotelbooking.model.Room;
+import com.hotelbooking.network.utils.HttpDataHandler;
+import com.hotelbooking.network.utils.HttpDataLoader;
 
 
 public class HotelInfoDataLoader implements HttpDataHandler{
