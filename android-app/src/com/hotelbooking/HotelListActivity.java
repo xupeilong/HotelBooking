@@ -3,6 +3,7 @@ package com.hotelbooking;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hotelbooking.HotelListAdapter.ViewHolder;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.ui.LoadMoreListView;
 import com.hotelbooking.ui.LoadMoreListView.OnLoadMoreListener;
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -55,6 +57,20 @@ public class HotelListActivity extends Activity {
 			@Override
 			public void onLoadMore() {
 				startGettingHotelListData();
+			}
+		});
+		
+		
+		listView.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				int id = hotels.get(arg2).getId();
+				Intent intent = new Intent();
+				intent.setClass(HotelListActivity.this, HotelInfoActivity.class);
+				intent.putExtra("hotel_id", id);
+				startActivity(intent);
 			}
 		});
 		

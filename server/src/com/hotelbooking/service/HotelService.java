@@ -26,13 +26,13 @@ public class HotelService {
 		if (hotels != null)
 			for (Hotel hotel: hotels)
 			{
-				HotelDAO hotelDAO = new HotelDAO();
-				HotelInfo info = hotelDAO.getInfoByHotelId(hotel.getId());
+				HotelInfo info = hotel.getInfo();
+				
 				int id = hotel.getId();
 				String name = hotel.getHotelName();
 				String area = info.getArea();
 				String level = info.getLevel();
-				int price = hotelDAO.getLowestPrice(id);
+				int price = hotel.getLowPrice();
 				int distance = 100;
 				String imagePath = info.getImagePath();
 				JSONObject obj = new JSONObject();

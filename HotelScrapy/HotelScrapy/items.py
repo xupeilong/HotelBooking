@@ -9,11 +9,19 @@ import scrapy
 
 
 class HotelInfo(scrapy.Item):
-    image_urls = scrapy.Field()
-    images = scrapy.Field()
-    image_paths = scrapy.Field()
+    image_url = scrapy.Field()
+    image_file_name = scrapy.Field()
     hotel_id = scrapy.Field()
     area = scrapy.Field()
     level = scrapy.Field()
+
+class HouseInfo(scrapy.Item):
+    image_url = scrapy.Field()
+    image_file_name = scrapy.Field()
+    house_name = scrapy.Field()
+    house_id = scrapy.Field()
+    hotel_id = scrapy.Field()
+
+
 
 

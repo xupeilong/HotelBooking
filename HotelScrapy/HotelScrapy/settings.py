@@ -13,8 +13,10 @@ BOT_NAME = 'HotelScrapy'
 SPIDER_MODULES = ['HotelScrapy.spiders']
 NEWSPIDER_MODULE = 'HotelScrapy.spiders'
 
-ITEM_PIPELINES = {'HotelScrapy.pipelines.MyImagesPipeline': 1}
+ITEM_PIPELINES = {'HotelScrapy.pipelines.InfoImagePipeline': 1,
+    'HotelScrapy.pipelines.HotelInfoPipeline': 2,
+    'HotelScrapy.pipelines.HouseInfoPipeline': 3,
+}
 IMAGES_STORE = 'D:/images'
-
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'HotelScrapy (+http://www.yourdomain.com)'

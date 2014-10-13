@@ -37,7 +37,7 @@ public class HotelListAdapter extends BaseAdapter{
 	}
 
 
-	private class ViewHolder
+	public class ViewHolder
 	{
 		public TextView nameTextView;
 		public TextView priceTextView;
@@ -74,9 +74,13 @@ public class HotelListAdapter extends BaseAdapter{
 		holder.levelTextView .setText(hotel.getLevel());
 		holder.areaTextView.setText(hotel.getArea());
 		holder.distanceTextView.setText(String.valueOf(hotel.getDistance()));
-		PictureLoader pictureLoader = new PictureLoader(context);
-		pictureLoader.startGettingPictrue(hotel.getImage_path(), holder.imageView);
-		
+		holder.imageView.setImageResource(R.drawable.bg_transparent);
+		String imagePath = hotel.getImage_path();
+		if (!imagePath.equals("none"))
+		{
+			PictureLoader pictureLoader = new PictureLoader(context);
+			pictureLoader.startGettingPictrue(imagePath, holder.imageView);
+		}
 		return convertView;
 	}
 

@@ -26,6 +26,13 @@ public class HotelInfo {
 	
 	public HotelInfo() {
 	}
+	
+	public HotelInfo(String area, String level, String imagePath)
+	{
+		this.area = area;
+		this.level = level;
+		this.imagePath = imagePath;
+	}
 
 	public int getId() {
 		return id;

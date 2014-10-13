@@ -31,6 +31,7 @@
 		<mapping class="com.hotelbooking.model.Hotel"/>  
 		<mapping class="com.hotelbooking.model.HotelInfo"/>
 		<mapping class="com.hotelbooking.model.House"/>
+		<mapping class="com.hotelbooking.model.HouseInfo"/>
 		<mapping class="com.hotelbooking.model.HousePrice"/>
           
     </session-factory>

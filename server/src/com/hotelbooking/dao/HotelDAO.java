@@ -10,17 +10,38 @@ import com.hotelbooking.model.HousePrice;
 
 public class HotelDAO extends BaseDAO{
 	
+	public Hotel getHotelById(int hotelId)
+	{
+		Hotel hotel = (Hotel) getById(Hotel.class, hotelId);
+		HotelInfo info = getHotelInfoByHotelId(hotel.getId());
+		hotel.setInfo(info);
+		return hotel;
+		
+	}
+	
 	public List<Hotel> getHotelsByDefault(int pageNum, int pageSize)
 	{
-		return listAll(Hotel.class, pageNum, pageSize);
+		List<Hotel> hotels = listAll(Hotel.class, pageNum, pageSize);
+		for (Hotel hotel: hotels)
+		{
+			HotelInfo info = getHotelInfoByHotelId(hotel.getId());
+			hotel.setInfo(info);
+			int lowPrice = getLowestPrice(hotel.getId());
+			hotel.setLowPrice(lowPrice);
+		}
+		return hotels;
+		
 	}
 	
-	public HotelInfo getInfoByHotelId(int hotelId)
+	private HotelInfo getHotelInfoByHotelId(int hotelId)
 	{
-		return  (HotelInfo) loadObject("from HotelInfo where hotelId = " + hotelId);
+		HotelInfo info = (HotelInfo) loadObject("from HotelInfo where hotelId = " + hotelId);
+		if (info == null)
+			info = new HotelInfo("none", "none", "none");
+		return info;
 	}
 	
-	public int getLowestPrice(int hotelId)
+	private int getLowestPrice(int hotelId)
 	{
 		List<House> houses = query("from House where hotelId = " + hotelId);
 		int min = -1;

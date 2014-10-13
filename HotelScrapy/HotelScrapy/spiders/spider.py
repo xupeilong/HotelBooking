@@ -2,15 +2,16 @@
 import scrapy
 import mysql.connector
 from HotelScrapy.items import HotelInfo
+from HotelScrapy.items import HouseInfo
 from urllib import quote
 import re
+import json
+from scrapy.selector import Selector
 
 class DmozSpider(scrapy.Spider):
     name = "hotel"
     allowed_domains = ["hotels.ctrip.com"]
     start_urls = []
-    names = []
-    ids = []
 
     city = {
     "北京": "beijing1", 
@@ -56,45 +57,115 @@ class DmozSpider(scrapy.Spider):
 
 
 
-    def __init__(self):
+    def start_requests(self):
         conn = mysql.connector.connect(user='root', password='sdp123', database='hotel', use_unicode=True)
         cursor = conn.cursor()
         cursor.execute('select * from orderprocess_hotel')
         values = cursor.fetchall()
-        # print values
+        # values = cursor.fetchmany(1)
+        # cursor.fetchall()
         for v in values:
+            #check repeat
             cursor.execute("select * from hotel_info where hotel_id = " + str(v[0]))
             vv = cursor.fetchall()
             if (len(vv) > 0):
                 continue
             base = "http://hotels.ctrip.com/hotel/"
+            name = v[1].encode('gbk')
+            a1 = re.compile('\xa3\xa8.*\xa3\xa9')  
+            name0 = a1.sub('', name)
+            name1 = name0.replace('\xc9\xcc\xce\xf1', '')
+            name1 = name1.replace('\t', '')
+            name1 = name1.replace('\n', '')
+            # print name1
+            req = ''
             try:
-                name = v[1].encode('utf-8')
-                a1 = re.compile('\（.*\）' )
-                name1 = a1.sub('', name)
-                self.start_urls.append(base + self.city[v[2].encode('utf-8')] + "/k2" + quote(name1))
-                self.ids.append(v[0])
+                print str(v[0]) + name1
+                req = scrapy.Request(base + self.city[v[2].encode('utf-8')] + "/k2" + quote(name1))
+                req.meta['hotel_id'] = v[0]   
+                yield req
             except Exception, e:
                 pass
-        #print self.start_urls
+            
 
+            
 
     def parse(self, response):
+        hotel_id = response.meta['hotel_id']
+        hotel_page_id = response.xpath('/html/body/form/div/div/div/div[@id="hotel_list"]/div[1]/@id').extract()[0]
+        # print hotel_page_id
+        hotel_image_url = response.xpath("/html/body[@id='mainbody']/form[@id='aspnetForm']/div[@id='base_bd']/"
+         + "div[@id='J_mainBox']/div[@class='base_main3']/div[@id='hotel_list']/div[1]/"
+         + "ul[@class='searchresult_info']/li[@class='pic_medal']/div[@class='hotel_pic']/a/"
+         + "img/@src").extract()[0]
+        # print "***" + str(len(hotel_image_url))
+
+        hotel_base_url = 'http://hotels.ctrip.com/hotel/'
+        hotel_url = hotel_base_url + str(hotel_page_id) + '.html'
+
+        req = scrapy.Request(hotel_url, callback=self.parse_hotel)
+        req.meta['hotel_id'] = hotel_id
+        req.meta['hotel_page_id'] = hotel_page_id
+        req.meta['hotel_image_url'] = hotel_image_url
+        yield req
+
+    def parse_hotel(self, response):
+        hotel_id = response.meta['hotel_id']
+        hotel_page_id = response.meta['hotel_page_id']
+        hotel_image_url = response.meta['hotel_image_url']
         item = HotelInfo()
-        hotel = response.xpath('//div[@class="searchresult_list"][1]')
-        level = hotel.xpath('//ancestor::p[@class="medal_list"]//span/@title').extract()[0].split(u'\uff08')[0]
+        level = response.xpath("/html/body[@id='mainbody']/form[@id='aspnetForm']/div[@id='base_bd']"
+         + "/div[@class='htl_info_com layoutfix']/div[@class='htl_info']/div[@class='grade']/"
+         + "span/@title").extract()[0].split(u'\uff08')[0]
         if len(level) > 3:
             level = level[-3:]
-        area = hotel.xpath('//ancestor::p[@class="searchresult_htladdress"]//a/text()').extract()[0]
-       
-        url = response.url
-        index = self.start_urls.index(url)
-        item['hotel_id'] = self.ids[index]
+        
+        area_result = response.xpath("/html/body[@id='mainbody']/form[@id='aspnetForm']/div[@id='base_bd']/"
+         + "div[@class='htl_info_com layoutfix']/div[@class='htl_info']/div[@class='adress']/"
+         + "a/text()").extract()
+        area = 'none'
+        if len(area_result) > 0:
+            area = area_result[0]
+
+        # hotel = response.xpath('//div[@class="searchresult_list"][1]')
+        # level = hotel.xpath('//ancestor::p[@class="medal_list"]//span/@title').extract()[0].split(u'\uff08')[0]
+        # if len(level) > 3:
+        #     level = level[-3:]
+        # area = hotel.xpath('//ancestor::p[@class="searchresult_htladdress"]//a/text()').extract()[0]
+        # url = hotel.xpath('//div[@class="hotel_pic"][1]//img/@src').extract()
+        item['hotel_id'] = hotel_id
         item['area'] = area
         item['level'] = level 
-
-        url = hotel.xpath('//div[@class="hotel_pic"][1]//img/@src').extract()
-        item['image_urls'] = url
-
+        item['image_url'] = hotel_image_url
         yield item
+
+        house_list_url = 'http://hotels.ctrip.com/Domestic/tool/AjaxHotelRoomListForDetail.aspx?hotel=' + str(hotel_page_id)
+        req = scrapy.Request(house_list_url, callback=self.parse_house)
+        req.meta['hotel_id'] = hotel_id
+        yield req
+
+    def parse_house(self, response):
+        hotel_id = response.meta['hotel_id']        
+        obj = json.loads(response.body, "gbk")
+        html = obj['html']
+        rooms = Selector(text=html).xpath('//td[@class="room_type"]')
+        for room in rooms:
+            pic_url_list = room.xpath('.//img/@src').extract()
+            if len(pic_url_list) > 0:
+                pic_url = pic_url_list[0]
+            else:
+                pic_url = 'none'   
+            room_name = room.xpath('.//a[@class="room_unfold"]/text()').extract()[0]
+            room_name = room_name.replace('\r', '')
+            room_name = room_name.replace('\n', '')
+            item = HouseInfo()
+            item['image_url'] = pic_url
+            item['house_name'] = room_name
+            item['hotel_id'] = hotel_id
+            yield item
+        
+
+
+
+
        

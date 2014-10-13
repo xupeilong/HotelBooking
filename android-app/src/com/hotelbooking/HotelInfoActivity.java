@@ -14,46 +14,30 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Adapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 public class HotelInfoActivity extends Activity {
 	
-	private TextView nameTextView;
-	private TextView levelTextView;
-	
-	private TextView scoreTextView;
-	private TextView commentCountTextView;
-	
-	private TextView enviromentTextView;
-	private TextView equipmentTextView;
-	private TextView serviceTextView;
-	private TextView healthTextView;
-	
-	private TextView areaTextView;
-	private TextView openedTextView;
-	
-	private ListView roomListView;
-	private RoomListAdapter roomListAdapter;
+	private TextView tvHotelName;
+	private TextView tvLevel;
+	private TextView tvIntro;
+	private ImageView imgIcon;
+	private ImageView tvAddress;
+	private LinearLayout llHouses;
 	
 	private void initViews()
 	{
-		nameTextView = (TextView) findViewById(R.id.text_hotel_name);
-		levelTextView = (TextView) findViewById(R.id.text_level);
-		
-		scoreTextView = (TextView) findViewById(R.id.text_score);
-		commentCountTextView = (TextView) findViewById(R.id.text_comment_count);
-		
-		enviromentTextView = (TextView) findViewById(R.id.text_environment);
-		equipmentTextView = (TextView) findViewById(R.id.text_equipment);
-		serviceTextView = (TextView) findViewById(R.id.text_service);
-		healthTextView = (TextView) findViewById(R.id.text_health);
-		
-		areaTextView = (TextView) findViewById(R.id.text_area);
-		openedTextView = (TextView) findViewById(R.id.text_opened);
-		
-		roomListView = (ListView) findViewById(R.id.list_room);
+		tvHotelName = (TextView) findViewById(R.id.text_hotel_name);
+		tvLevel = (TextView) findViewById(R.id.text_level);
+		tvIntro = (TextView) findViewById(R.id.text_intro);
+		imgIcon = (ImageView) findViewById(R.id.image_hotel_icon);
+		tvAddress = (ImageView) findViewById(R.id.text_address);
+		llHouses = (LinearLayout) findViewById(R.id.view_gourp_houses);
 	}
 
 	@Override

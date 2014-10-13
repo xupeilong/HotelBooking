@@ -30,102 +30,44 @@
 
     <LinearLayout style="@style/card_parnet" >
 
-        <LinearLayout style="@style/card" >
-
-            <LinearLayout style="@style/card_item" >
-
-                <TextView
-                    android:id="@+id/text_score"
-                    style="@style/text_strong" 
-                    />
-
-                <TextView
-                    android:id="@+id/text_score_suffix"
-                    style="@style/text_strong_suffix"
-                    android:text="分" />
-
-                <TextView
-                    android:id="@+id/text_comment_count"
-                    style="@style/text_strong" 
-                    android:layout_marginStart="10dp"/>
-
-                <TextView
-                    android:id="@+id/text_comment_count_suffix"
-                    style="@style/text_strong_suffix"
-                    android:text="人点评" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/card_item" >
-
-                <TextView
-                    android:id="@+id/text_environment_prefix"
-                    style="@style/text_sub"
-                    android:text="环境" />
-
-                <TextView
-                    android:id="@+id/text_environment"
-                    style="@style/text_sub" />
-
-                <TextView
-                    android:id="@+id/text_equipment_prefix"
-                    style="@style/text_sub"
-                    android:layout_marginLeft="10dp"
-                    android:text="设施" />
-
-                <TextView
-                    android:id="@+id/text_equipment"
-                    style="@style/text_sub" />
-
-
-                <TextView
-                    android:id="@+id/text_service_prefix"
-                    style="@style/text_sub"
-                    android:layout_marginLeft="10dp"
-                    android:text="服务" />
-
-                <TextView
-                    android:id="@+id/text_service"
-                    style="@style/text_sub" />
-
-                <TextView
-                    android:id="@+id/text_health_prefix"
-                    style="@style/text_sub"
-                    android:layout_marginLeft="10dp"
-                    android:text="卫生" />
-
-                <TextView
-                    android:id="@+id/text_health"
-                    style="@style/text_sub" />
-            </LinearLayout>
-        </LinearLayout>
+      	<RelativeLayout 
+      	    android:layout_width="match_parent"
+      	    android:layout_height="wrap_content"
+      	    >
+      	    
+      	     <ImageView 
+		        android:id="@+id/image_hotel_icon"
+		        android:layout_width="100dp"
+		        android:layout_height="100dp"
+		        android:src="@drawable/bg_green"
+		        android:layout_alignParentRight="true"
+		        />
+      	     <LinearLayout 
+      	         style="@style/card"
+      	         android:layout_toLeftOf="@id/image_hotel_icon"
+      	         >
+      	         <TextView
+      	            android:id="@+id/text_intro"
+      	            style="@style/card_item" 
+      	         	    
+      	             />
+      	     </LinearLayout>
+      	</RelativeLayout>
 
         <LinearLayout style="@style/card" >
 
             <LinearLayout style="@style/card_item" >
 
                 <TextView
-                    android:id="@+id/text_area"
-                    style="@style/text_normal" />
-            </LinearLayout>
-
-            <LinearLayout style="@style/card_item" >
-
-                <TextView
-                    android:id="@+id/text_opened"
-                    style="@style/text_normal" />
-
-                <TextView
-                    android:id="@+id/text_opened_suffix"
+                    android:id="@+id/text_address"
                     style="@style/text_normal" />
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout style="@style/card" >
-
-            <ListView
-                android:id="@+id/list_room"
-                style="@style/card_item" >
-            </ListView>
+        <LinearLayout 
+            android:id="@+id/view_gourp_houses"
+            style="@style/card" >
+            
         </LinearLayout>
     </LinearLayout>
 
