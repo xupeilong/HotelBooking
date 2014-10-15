@@ -20,11 +20,13 @@ public class HouseService {
 		HouseDAO houseDAO = new HouseDAO();
 		List<House> houses = houseDAO.getHouseListByHotelId(hotelId);
 		JSONObject obj = new JSONObject();
+		obj.put("hotel_id", hotel.getId());
 		obj.put("name", hotel.getHotelName());
 		obj.put("level", hotelInfo.getLevel());
 		obj.put("icon_image_path", hotelInfo.getImagePath());
 		obj.put("intro", "intro");
 		obj.put("address", hotel.getAddress());
+		obj.put("area", hotel.getInfo().getArea());
 		JSONArray houseArray = new JSONArray();
 		for (House house: houses)
 		{

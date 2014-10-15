@@ -68,7 +68,7 @@ public class HotelListActivity extends Activity {
 					long arg3) {
 				int id = hotels.get(arg2).getId();
 				Intent intent = new Intent();
-				intent.setClass(HotelListActivity.this, HotelInfoActivity.class);
+				intent.setClass(HotelListActivity.this, HotelDetailActivity.class);
 				intent.putExtra("hotel_id", id);
 				startActivity(intent);
 			}

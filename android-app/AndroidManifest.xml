@@ -25,15 +25,14 @@
         <activity
             android:name="com.hotelbooking.HotelListActivity"
             android:label="@string/title_activity_hotel_list" >
-            
-        </activity>
-        <activity
-            android:name="com.hotelbooking.HotelInfoActivity"
-            android:label="@string/title_activity_hotel_info" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.hotelbooking.HotelDetailActivity"
+            android:label="@string/title_activity_hotel_info" >
         </activity>
     </application>
 

@@ -1,5 +1,7 @@
 package com.hotelbooking.model;
 
+import java.util.List;
+
 public class Hotel {
 
 	private int id;
@@ -10,6 +12,11 @@ public class Hotel {
 	private int distance;
 	private String image_path;
 	
+	private String intro;
+	private String address;
+	private List<House> houses;
+	
+	// for hotel list
 	public Hotel(int id, String name, String area, String level, int price, int distance, String image_path) {
 		super();
 		this.id = id;
@@ -19,6 +26,20 @@ public class Hotel {
 		this.price = price;
 		this.distance = distance;
 		this.image_path = image_path;
+	}
+	
+	// for hotel detail
+	public Hotel(int id, String name, String level, String image_path, String intro, String area,
+			String address, List<House> houses) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.level = level;
+		this.image_path = image_path;
+		this.intro = intro;
+		this.area = area;
+		this.address = address;
+		this.houses = houses;
 	}
 
 	public int getId() {
@@ -75,6 +96,30 @@ public class Hotel {
 
 	public void setImage_path(String image_path) {
 		this.image_path = image_path;
+	}
+
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public List<House> getHouses() {
+		return houses;
+	}
+
+	public void setHouses(List<House> houses) {
+		this.houses = houses;
 	}
 	
 	

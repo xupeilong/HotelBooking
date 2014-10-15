@@ -1,5 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView 
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f5f5f5"
@@ -8,7 +12,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".HotelInfoActivity" >
+    tools:context=".HotelDetailActivity" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -41,15 +45,19 @@
 		        android:layout_height="100dp"
 		        android:src="@drawable/bg_green"
 		        android:layout_alignParentRight="true"
+		        android:paddingLeft="10dp"
 		        />
       	     <LinearLayout 
       	         style="@style/card"
       	         android:layout_toLeftOf="@id/image_hotel_icon"
       	         >
       	         <TextView
-      	            android:id="@+id/text_intro"
+      	            android:id="@+id/text_area"
       	            style="@style/card_item" 
-      	         	    
+      	             />
+      	         <TextView
+      	            android:id="@+id/text_address"
+      	            style="@style/card_item" 
       	             />
       	     </LinearLayout>
       	</RelativeLayout>
@@ -59,16 +67,18 @@
             <LinearLayout style="@style/card_item" >
 
                 <TextView
-                    android:id="@+id/text_address"
+                    android:id="@+id/text_intro"
                     style="@style/text_normal" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout 
             android:id="@+id/view_gourp_houses"
+            android:orientation="vertical"
             style="@style/card" >
             
         </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>
