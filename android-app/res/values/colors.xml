@@ -15,6 +15,13 @@
 	<color name="graywhite">#F5F5F5</color>
 	<color name="grayslate">#708090</color>
 	<color name="lightblue">#0083FF</color>
+	<color name="button_large_bg_pressed_green">#0099CC</color>
+    <color name="button_large_bg_normal_green">#33B5E5</color>
+    <color name="button_unable_gray">#FFC0C0C0</color>
+    <color name="user_green">#395387</color>
+    <color name="line_gray">#7c7c7c</color>
+    <color name="bg_gray">#ededed</color>
+    <color name="input_bg_gray">#f4f4f4</color>
 	
     <color name="full_transparent">#00000000</color>
     <color name="half_transparent">#aa000000</color>

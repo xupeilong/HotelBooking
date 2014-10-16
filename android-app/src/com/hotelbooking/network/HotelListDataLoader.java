@@ -1,4 +1,4 @@
-package com.hotelbooking;
+package com.hotelbooking.network;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.json.JSONTokener;
 import android.content.Context;
 import android.provider.SyncStateContract.Constants;
 
+import com.hotelbooking.HotelListActivity;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.network.utils.HttpDataHandler;
 import com.hotelbooking.network.utils.HttpDataLoader;

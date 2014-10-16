@@ -1,8 +1,12 @@
-package com.hotelbooking;
+package com.hotelbooking.Adapter;
 
 import java.util.List;
 import java.util.zip.Inflater;
 
+import com.hotelbooking.R;
+import com.hotelbooking.R.drawable;
+import com.hotelbooking.R.id;
+import com.hotelbooking.R.layout;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.network.utils.PictureLoader;
 

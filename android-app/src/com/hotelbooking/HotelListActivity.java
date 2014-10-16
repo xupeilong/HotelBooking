@@ -3,8 +3,10 @@ package com.hotelbooking;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.hotelbooking.HotelListAdapter.ViewHolder;
+import com.hotelbooking.Adapter.HotelListAdapter;
+import com.hotelbooking.Adapter.HotelListAdapter.ViewHolder;
 import com.hotelbooking.model.Hotel;
+import com.hotelbooking.network.HotelListDataLoader;
 import com.hotelbooking.ui.LoadMoreListView;
 import com.hotelbooking.ui.LoadMoreListView.OnLoadMoreListener;
 import com.hotelbooking.ui.PullToRefreshListView;

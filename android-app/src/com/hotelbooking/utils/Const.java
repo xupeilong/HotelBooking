@@ -9,7 +9,9 @@ public class Const {
 	public static final String GetHotelListURL = BASE_URL + "/GetHotelList";
 	public static final String GetHotelDetailURL = BASE_URL + "/GetHotelDetail";
 	public static final String GetImageURL = BASE_URL + "/GetImage";
-	
+	public static final String LoginURL = BASE_URL + "/Login";
+	public static final String RegisterURL = BASE_URL + "/Register";
 	
 	public static final String PICTURE_DIR = "hotelbooking" + File.separator;
 }
+

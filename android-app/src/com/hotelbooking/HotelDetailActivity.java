@@ -5,6 +5,7 @@ import java.util.List;
 import com.hotelbooking.R.id;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.House;
+import com.hotelbooking.network.HotelInfoDataLoader;
 import com.hotelbooking.network.utils.PictureLoader;
 
 import android.os.Bundle;

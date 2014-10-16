@@ -1,4 +1,4 @@
-package com.hotelbooking;
+package com.hotelbooking.network;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import com.hotelbooking.HotelDetailActivity;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.House;
 import com.hotelbooking.network.utils.HttpDataHandler;
