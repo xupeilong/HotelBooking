@@ -34,6 +34,8 @@
 		<mapping class="com.hotelbooking.model.HouseInfo"/>
 		<mapping class="com.hotelbooking.model.HousePrice"/>
 		<mapping class="com.hotelbooking.model.User"/>
+		<mapping class="com.hotelbooking.model.OriginOrder"/>
+		<mapping class="com.hotelbooking.model.UserOrder"/>
           
     </session-factory>
 </hibernate-configuration>

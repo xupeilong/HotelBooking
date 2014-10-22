@@ -37,7 +37,7 @@ public class BaseDAO {
 	}
 
 	/** 统计指定规则的查询结果 */
-	public int countQuery(String hql) {
+	public int countQuery(String hql, Object ...args) {
 		// TODO Auto-generated method stub
 		String counthql = hql;
 		Long count=-new Long("-1");
@@ -47,6 +47,8 @@ public class BaseDAO {
 			Query query=session.createQuery(hql);
 			ts=session.beginTransaction();
 			query.setMaxResults(1);
+			for (int i = 0; i < args.length; i++)
+				query.setParameter(i, args[i]);
 			count=(Long) (query.uniqueResult());
 			ts.commit();
 		}catch(Exception e){
@@ -57,6 +59,23 @@ public class BaseDAO {
 			HibernateSessionFactory.closeSession();
 		}
 		return count.intValue();
+	}
+	
+	public void delele(Object obj)
+	{
+		Session session=HibernateSessionFactory.getSession();
+		Transaction ts=null;
+		try{
+			ts=session.beginTransaction();
+			session.delete(obj);
+			ts.commit();
+		}catch(Exception e){
+			if(ts!=null)ts.rollback();
+			System.out.println("【系统错误】在加载满足条件的持久化对象时出错，原因：");
+			e.printStackTrace();
+		}finally{
+			HibernateSessionFactory.closeSession();
+		}
 	}
 
 	/** 删除指定ID的持久化对象 */
@@ -150,13 +169,15 @@ public class BaseDAO {
 	}
 
 	/**加载满足条件的持久化对象*/
-	public Object loadObject(String hql) {
+	public Object loadObject(String hql, Object ...args) {
 		// TODO Auto-generated method stub
 		Object obj=null;
 		Session session=HibernateSessionFactory.getSession();
 		Transaction ts=null;
 		try{
 			Query query=session.createQuery(hql);
+			for (int i = 0; i < args.length; i++)
+				query.setParameter(i, args[i]);
 			ts=session.beginTransaction();
 			List list=query.list();
 			ts.commit();
@@ -173,13 +194,40 @@ public class BaseDAO {
 	}
 
 	/** 查询满足条件的持久化对象 */
-	public List query(String hql) {
+	public List query(String hql, Object ...args) {
 		// TODO Auto-generated method stub
 		List list=new ArrayList();
 		Session session=HibernateSessionFactory.getSession();
 		Transaction ts=null;
 		try{
 			Query query=session.createQuery(hql);
+			for (int i = 0; i < args.length; i++)
+				query.setParameter(i, args[i]);
+			ts=session.beginTransaction();
+			list=query.list();
+			ts.commit();
+			if(!Hibernate.isInitialized(list)){Hibernate.initialize(list);}
+		}catch(Exception e){
+			if(ts!=null)ts.rollback();
+			System.out.println("【系统错误】在查询满足条件的持久化对象时出错，原因：");
+			e.printStackTrace();
+		}finally{
+			HibernateSessionFactory.closeSession();
+		}
+		return list;
+	}
+	
+	public List query(int pageNum, int pageSize, String hql, Object ...args) {
+		// TODO Auto-generated method stub
+		List list=new ArrayList();
+		Session session=HibernateSessionFactory.getSession();
+		Transaction ts=null;
+		try{
+			Query query=session.createQuery(hql);
+			for (int i = 0; i < args.length; i++)
+				query.setParameter(i, args[i]);
+			query.setFirstResult(pageNum * pageSize);
+			query.setMaxResults(pageSize);
 			ts=session.beginTransaction();
 			list=query.list();
 			ts.commit();

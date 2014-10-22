@@ -30,7 +30,7 @@ public class HouseService {
 		JSONArray houseArray = new JSONArray();
 		for (House house: houses)
 		{
-			int price = houseDAO.getPrice(house.getId()); 
+			int price = houseDAO.getHousePrice(house.getId()); 
 			JSONObject houseObj = new JSONObject();
 			houseObj.put("id", house.getId());
 			houseObj.put("name", house.getName());

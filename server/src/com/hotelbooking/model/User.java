@@ -6,9 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import net.sf.json.JSONObject;
+
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "app_user")
+public class User implements JsonObject{
 	
 	@Id
 	@GeneratedValue
@@ -25,6 +27,29 @@ public class User {
 	
 	public User() {
 	}
+	
+
+	public User(String account, String password, String name) {
+		super();
+		this.account = account;
+		this.password = password;
+		this.name = name;
+	}
+	
+	@Override
+	public String getJsonName() {
+		return "user";
+	}
+
+
+	@Override
+	public String getJsonValue() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("id", id);
+		jsonObject.put("name", name);
+		return jsonObject.toString();
+	}
+
 
 	public int getId() {
 		return id;
@@ -57,7 +82,6 @@ public class User {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
 
 }
