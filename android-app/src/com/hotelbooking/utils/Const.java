@@ -2,6 +2,8 @@ package com.hotelbooking.utils;
 
 import java.io.File;
 
+import com.hotelbooking.model.User;
+
 public class Const {
 
 	private static final String BASE_URL = "http://192.168.3.199:8080/HotelBooking";
@@ -13,5 +15,7 @@ public class Const {
 	public static final String RegisterURL = BASE_URL + "/Register";
 	
 	public static final String PICTURE_DIR = "hotelbooking" + File.separator;
+	
+	public static User currentUser = null;
 }
 

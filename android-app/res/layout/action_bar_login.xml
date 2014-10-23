@@ -16,7 +16,7 @@
         />
  	
     <TextView
-        android:id="@+id/button_map"
+        android:id="@+id/text_register_action_bar"
         android:text="注册" 
         android:textColor="#ffffff"
         android:textSize="15dp"
@@ -37,7 +37,7 @@
         android:textColor="#ffffff"
         android:textSize="25dp"
         android:layout_toRightOf="@id/button_back"
-        android:layout_toLeftOf="@id/button_map"/>
+        android:layout_toLeftOf="@id/text_register_action_bar"/>
 
     
 

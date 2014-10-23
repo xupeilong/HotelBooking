@@ -7,16 +7,19 @@ import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.House;
 import com.hotelbooking.network.HotelInfoDataLoader;
 import com.hotelbooking.network.utils.PictureLoader;
+import com.hotelbooking.utils.Const;
 
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ImageView;
@@ -104,6 +107,24 @@ public class HotelDetailActivity extends Activity {
 			}
 			else
 				imgHouseIcon.setImageResource(R.drawable.no_pic);
+			
+			tvBook.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View arg0) {
+					Intent intent = new Intent();
+					if (Const.currentUser != null)
+					{
+//						intent.setClass(HotelDetailActivity.this, cls)
+					}
+					else
+					{
+						intent.setClass(HotelDetailActivity.this, LoginActivity.class);
+						
+					}
+					startActivity(intent);
+				}
+			});
 		}
 	}
 	

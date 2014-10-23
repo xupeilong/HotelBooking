@@ -1,29 +1,66 @@
 package com.hotelbooking;
 
 import com.hotelbooking.model.User;
+import com.hotelbooking.network.RegisterDataLoader;
 
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class RegisterActivity extends Activity {
 	
 	private EditText etAccount;
+	private EditText etName;
 	private EditText etPassword;
 	private Button btnRegister;
+	private TextView tvLogin;
+	
+	private ActionBar actionBar;
+	private View actionBarView;
 	
 	private void initViews()
 	{
 		etAccount = (EditText) findViewById(R.id.edit_account);
 		etPassword = (EditText) findViewById(R.id.edit_password);
+		etName = (EditText) findViewById(R.id.edit_name);
 		btnRegister = (Button) findViewById(R.id.button_register);
+		tvLogin = (TextView) actionBarView.findViewById(R.id.text_login_action_bar);
+	}
+	
+	private void initListeners()
+	{
+		btnRegister.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				String account = etAccount.getText().toString();
+				String password = etPassword.getText().toString();
+				String name = etName.getText().toString();
+				RegisterDataLoader registerDataLoader = new RegisterDataLoader(RegisterActivity.this);
+				registerDataLoader.startRegister(account, password, name);
+			}
+		});
+		
+		tvLogin.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent();
+				intent.setClass(RegisterActivity.this, LoginActivity.class);
+				startActivity(intent); 
+			}
+		});
+		
 	}
 
 	@Override
@@ -34,9 +71,9 @@ public class RegisterActivity extends Activity {
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
 				Gravity.CENTER);
-		View actionBarView = LayoutInflater.from(this).inflate(
-				R.layout.action_bar_login, null);
-		ActionBar actionBar = getActionBar();
+		actionBarView = LayoutInflater.from(this).inflate(
+				R.layout.action_bar_hotel_info, null);
+		actionBar = getActionBar();
 		actionBar.setCustomView(actionBarView, layoutParams);
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
@@ -51,6 +88,8 @@ public class RegisterActivity extends Activity {
 	{
 		
 	}
+	
+	private checkAcco
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

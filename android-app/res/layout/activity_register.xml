@@ -27,7 +27,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_marginLeft="5dp"
-                android:src="@drawable/login_user" />
+                android:src="@drawable/login_email" />
         <EditText
             android:id="@+id/edit_account"
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:background="@android:color/white"
-            android:hint="用户名(2~16个字符)"
+            android:hint="用户名(6~20个字符)"
             android:imeOptions="actionGo"
             android:textColor="@android:color/black"
             android:padding="2dp"
@@ -50,7 +50,41 @@
             android:visibility="gone" />
     </LinearLayout>
     
+	 <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
+        <ImageView
+                android:id="@+id/ic_username"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/login_user" />
+        <EditText
+            android:id="@+id/edit_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:hint="联系人姓名"
+            android:imeOptions="actionGo"
+            android:textColor="@android:color/black"
+            android:padding="2dp"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/image_account_delete"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_weight="0"
+            android:src="@drawable/actionbar_deletetext_icon"
+            android:visibility="gone" />
+    </LinearLayout>
    
 
     <View
@@ -83,7 +117,38 @@
             android:layout_marginLeft="15dp"
             android:layout_weight="1"
             android:background="@android:color/white"
-            android:hint="请设置密码(6~11位)"
+            android:hint="请设置密码(6~20位)"
+            android:imeOptions="actionNext"
+            android:inputType="textPassword"
+            android:textColor="@android:color/black"
+            android:padding="2dp"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+    
+     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+        
+        <ImageView
+                android:id="@+id/ic_password"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/login_key" />
+
+        <EditText
+            android:id="@+id/edit_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:hint="请再次输入密码"
             android:imeOptions="actionNext"
             android:inputType="textPassword"
             android:textColor="@android:color/black"

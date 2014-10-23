@@ -64,7 +64,7 @@ public class LoginDataLoader implements HttpDataHandler{
 
 		try {
 			JSONObject obj = (JSONObject) tokener.nextValue();
-			requestCode = obj.getInt("result_code");
+			resultCode = obj.getInt("result_code");
 			int id = obj.getInt("id");
 			String name = obj.getString("name");
 			user = new User(id, name); 
