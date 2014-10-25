@@ -6,7 +6,7 @@ import com.hotelbooking.model.User;
 
 public class Const {
 
-	private static final String BASE_URL = "http://192.168.3.199:8080/HotelBooking";
+	private static final String BASE_URL = "http://192.168.3.203:8080/HotelBooking";
 	
 	public static final String GetHotelListURL = BASE_URL + "/GetHotelList";
 	public static final String GetHotelDetailURL = BASE_URL + "/GetHotelDetail";

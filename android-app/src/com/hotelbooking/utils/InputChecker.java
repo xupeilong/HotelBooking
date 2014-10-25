@@ -11,7 +11,7 @@ public class InputChecker {
 		this.context = context;
 	}
 	
-	private boolean checkAccount(String account)
+	public boolean checkAccount(String account)
 	{
 		if (account == null || account.length() == 0)
 		{
@@ -32,7 +32,7 @@ public class InputChecker {
 		return true;
 	}
 	
-	private boolean checkPassword(String password)
+	public boolean checkPassword(String password)
 	{
 		if (password == null || password.length() == 0)
 		{
@@ -53,8 +53,39 @@ public class InputChecker {
 		return true;
 	}
 	
+	public boolean checkPassword(String password, String repeatPassword)
+	{
+		if (!password.equals(repeatPassword))
+		{
+			prompt("两次密码输入不一致");
+			return false;
+		}
+		return checkPassword(password);
+	}
+	
+	public boolean checkName(String name)
+	{
+		if (name == null || name.length() == 0)
+		{
+			prompt("请输入联系人姓名");
+			return false;
+		}
+		
+		if (name.length() < 2)
+		{
+			prompt("姓名过短");
+			return false;
+		}
+		if (name.length() > 30)
+		{
+			prompt("姓名过长");
+			return false;
+		}
+		return true;
+	}
+	
 	private void prompt(String message)
 	{
-		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		Toast.makeText(context, message, Toast.LENGTH_LONG).show();
 	}
 }

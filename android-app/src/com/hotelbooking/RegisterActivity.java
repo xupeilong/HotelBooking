@@ -2,12 +2,14 @@ package com.hotelbooking;
 
 import com.hotelbooking.model.User;
 import com.hotelbooking.network.RegisterDataLoader;
+import com.hotelbooking.utils.InputChecker;
 
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -16,12 +18,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RegisterActivity extends Activity {
 	
 	private EditText etAccount;
 	private EditText etName;
 	private EditText etPassword;
+	private EditText etPasswordRepeat;
 	private Button btnRegister;
 	private TextView tvLogin;
 	
@@ -32,6 +36,7 @@ public class RegisterActivity extends Activity {
 	{
 		etAccount = (EditText) findViewById(R.id.edit_account);
 		etPassword = (EditText) findViewById(R.id.edit_password);
+		etPasswordRepeat = (EditText) findViewById(R.id.edit_password_repeat); 
 		etName = (EditText) findViewById(R.id.edit_name);
 		btnRegister = (Button) findViewById(R.id.button_register);
 		tvLogin = (TextView) actionBarView.findViewById(R.id.text_login_action_bar);
@@ -45,9 +50,14 @@ public class RegisterActivity extends Activity {
 			public void onClick(View arg0) {
 				String account = etAccount.getText().toString();
 				String password = etPassword.getText().toString();
+				String repeatPassword = etPasswordRepeat.getText().toString();
 				String name = etName.getText().toString();
-				RegisterDataLoader registerDataLoader = new RegisterDataLoader(RegisterActivity.this);
-				registerDataLoader.startRegister(account, password, name);
+				InputChecker checker = new InputChecker(RegisterActivity.this);
+				if (checker.checkAccount(account) && checker.checkPassword(password, repeatPassword) && checker.checkName(name))
+				{
+					RegisterDataLoader registerDataLoader = new RegisterDataLoader(RegisterActivity.this);
+					registerDataLoader.startRegister(account, password, name);
+				}
 			}
 		});
 		
@@ -72,7 +82,7 @@ public class RegisterActivity extends Activity {
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
 				Gravity.CENTER);
 		actionBarView = LayoutInflater.from(this).inflate(
-				R.layout.action_bar_hotel_info, null);
+				R.layout.action_bar_register, null);
 		actionBar = getActionBar();
 		actionBar.setCustomView(actionBarView, layoutParams);
 		actionBar.setDisplayShowCustomEnabled(true);
@@ -80,17 +90,35 @@ public class RegisterActivity extends Activity {
 		actionBar.setDisplayShowTitleEnabled(false);
 		
 		initViews();
+		initListeners();
 		
 		
 	}
 	
 	public void onRegisterFinished(int resultCode, User user)
 	{
+		if (resultCode == 0)
+		{
+			prompt("注册成功");
+			Intent intent = new Intent();
+			intent.setClass(this, LoginActivity.class);
+			startActivity(intent);
+		}
+		else if (resultCode == 1)
+		{
+			prompt("账号已被注册");
+		}
+		else if (resultCode == 2)
+		{
+			prompt("格式错误");
+		}
+		else if (resultCode == 3)
+		{
+			prompt("数据库错误");
+		}
 		
 	}
 	
-	private checkAcco
-
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -98,4 +126,8 @@ public class RegisterActivity extends Activity {
 		return true;
 	}
 
+	private void prompt(String message)
+	{
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+	}
 }

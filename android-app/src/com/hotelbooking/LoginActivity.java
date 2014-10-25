@@ -2,6 +2,7 @@ package com.hotelbooking;
 
 import com.hotelbooking.model.User;
 import com.hotelbooking.network.LoginDataLoader;
+import com.hotelbooking.utils.InputChecker;
 
 import android.location.Location;
 import android.location.LocationManager;
@@ -80,7 +81,8 @@ public class LoginActivity extends Activity {
 			public void onClick(View arg0) {
 				String account = tvAccount.getText().toString();
 				String password = etPassword.getText().toString();
-				if (checkAccount(account) && checkPassword(password))
+				InputChecker checker = new InputChecker(LoginActivity.this);
+				if (checker.checkAccount(account) && checker.checkPassword(password))
 				{
 					LoginDataLoader loginDataLoader = new LoginDataLoader(LoginActivity.this);
 					loginDataLoader.startLogin(account, password);
@@ -110,6 +112,7 @@ public class LoginActivity extends Activity {
 			}
 			else
 				intent.setClass(this, MainActivity.class);
+			startActivity(intent);
 		}
 		else if (resultCode == 1)
 		{
@@ -124,6 +127,11 @@ public class LoginActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.login, menu);
 		return true;
+	}
+	
+	private void prompt(String message)
+	{
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 	
 
