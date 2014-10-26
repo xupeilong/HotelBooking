@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_card_order"
+    android:layout_margin="5dp"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <ImageView 
+            android:id="@+id/icon_hotel"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icon_hotel"
+            />
+        <TextView 
+            android:id="@+id/text_hotel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="酒店"
+            android:layout_toRightOf="@id/icon_hotel"
+            />
+        
+        <TextView 
+            android:id="@+id/text_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="确认中"
+            android:background="@drawable/bg_grey"
+            android:layout_toRightOf="@id/text_hotel"
+            />
+                
+        <TextView 
+            android:id="@+id/text_money_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="998"
+            android:layout_alignParentRight="true"
+            />
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥"
+            android:layout_toLeftOf="@id/text_money_count"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        
+        <TextView 
+            android:id="@+id/text_hotel_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="XXX大酒店"
+            android:textSize="18dp"
+            android:textColor="#000000"
+            />
+        
+        <TextView 
+            android:id="@+id/text_hotel_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="南京路213号"
+            android:layout_below="@id/text_hotel_name"
+            />
+        
+        <TextView
+            android:id="@+id/text_order_date" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="3晚 1月1日 - 1月4日"
+            android:layout_below="@id/text_hotel_address"
+            />
+        
+        <TextView 
+            android:id="@+id/text_order_house_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1间 豪华客房"
+            android:layout_below="@id/text_order_date"
+            />
+        
+        <TextView 
+            android:id="@+id/text_cutomer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="张三"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/text_order_house_name"
+            />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        
+        <TextView
+            android:id="@+id/text_cancel_button" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="#099fde"
+            android:background="@drawable/bg_order_button"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

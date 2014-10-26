@@ -30,7 +30,6 @@
         <activity
             android:name="com.hotelbooking.HotelListActivity"
             android:label="@string/title_activity_hotel_list" >
-             
         </activity>
         <activity
             android:name="com.hotelbooking.HotelDetailActivity"
@@ -39,11 +38,14 @@
         <activity
             android:name="com.hotelbooking.LoginActivity"
             android:label="@string/title_activity_login" >
-           
         </activity>
         <activity
             android:name="com.hotelbooking.RegisterActivity"
             android:label="@string/title_activity_register" >
+        </activity>
+        <activity
+            android:name="com.hotelbooking.OrderActivity"
+            android:label="@string/title_activity_order" >
         </activity>
     </application>
 

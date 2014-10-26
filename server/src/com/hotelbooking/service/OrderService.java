@@ -50,6 +50,11 @@ public class OrderService {
 		HotelDAO hotelDAO = new HotelDAO();
 		HouseDAO houseDAO = new HouseDAO();
 		List<UserOrder> orders = orderDAO.getOrderListByUserId(userId, pageNum, pageSize);
+		JSONObject resultObj = new JSONObject();
+		int isLastCode = 0;
+		if (orders.size() < pageSize)
+			isLastCode = 1;
+		resultObj.put("is_last_page", isLastCode);
 		JSONArray array = new JSONArray();
 		for (UserOrder userOrder: orders)
 		{
@@ -67,6 +72,7 @@ public class OrderService {
 			obj.put("house_name", house.getName());
 			array.add(obj);
 		}
-		return array.toString();
+		resultObj.put("orders", array);
+		return resultObj.toString();
 	}
 }

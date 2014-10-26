@@ -2,49 +2,209 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    >
-    
-    <RelativeLayout 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        >
-        
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <RelativeLayout style="@style/search_item" >
+
         <TextView
             android:id="@+id/text_my_location_button"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"
-        	android:text="我的位置"
-        	android:layout_alignParentRight="true" 
-        />
-        
-        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/bg_my_local_btn"
+            android:drawablePadding="3dp"
+            android:drawableStart="@drawable/icon_hotel_location_inquire"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="我的位置"
+            android:textColor="#1491c5" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_toLeftOf="@id/text_my_location_button" >
+
+            <TextView
+                style="@style/search_item_main_text"
+                android:layout_alignParentLeft="true"
+                android:drawableRight="@drawable/btn_flight_right"
+                android:hint="城市"
+                android:padding="5dp"
+                android:text="我附近的酒店" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/divider_grey" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/search_item"
+        android:layout_margin="5dp" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/divider_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/btn_flight_right"
+            android:gravity="center_vertical" />
+
+        <TextView
+            style="@style/search_item_main_text"
+            android:layout_alignParentLeft="true"
+            android:padding="5dp"
+            android:text="今天" />
+
+        <LinearLayout
+            android:id="@+id/text_plus_minus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="城市"
-            android:layout_toLeftOf="@id/text_my_location_button"
-            android:layout_alignParentLeft="true"
-            android:background="@drawable/bg_arrow"
-            
-            />
-        
-   	</RelativeLayout>
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:visibility="invisible" >
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/order_ic_minus_normal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/hotel_ic_plus_normal" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_checkin"
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_plus_minus"
+            android:padding="5dp"
+            android:text="入住"
+            android:textColor="#000000" />
+
+        <TextView
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_checkin"
+            android:text="1月1日" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/search_item"
+        android:layout_margin="5dp" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/divider_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/btn_flight_right"
+            android:gravity="center_vertical"
+            android:visibility="invisible" />
+
+        <TextView
+            style="@style/search_item_main_text"
+            android:layout_alignParentLeft="true"
+            android:padding="5dp"
+            android:text="今天" />
+
+        <LinearLayout
+            android:id="@+id/text_plus_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/order_ic_minus_normal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/hotel_ic_plus_normal" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_checkin"
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_plus_minus"
+            android:padding="5dp"
+            android:text="离店"
+            android:textColor="#000000" />
+
+        <TextView
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_checkin"
+            android:text="1月1日" />
+    </RelativeLayout>
+
+    <TextView
+        style="@style/search_item"
+        android:layout_margin="5dp"
+        android:drawableRight="@drawable/btn_flight_right"
+        android:gravity="center_vertical"
+        android:hint="关键字/就点名"
+        android:padding="5dp"
+        android:textSize="20dp" />
     
+     <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider_grey" />
+
+    <TextView
+        style="@style/search_item"
+        android:layout_margin="5dp"
+        android:drawableRight="@drawable/btn_flight_right"
+        android:gravity="center_vertical"
+        android:hint="价格/星级"
+        android:padding="5dp"
+        android:textSize="20dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider_grey" />
 
     <TextView
         android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/selector_button" 
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/selector_button"
+        android:gravity="center"
+        android:padding="10dp"
         android:text="查询"
-        android:textColor="#ffffff"
-        android:gravity="center_horizontal"
-        android:padding="10dp"/>
+        android:textSize="20dp"
+        android:textColor="#ffffff" />
+
    
 
 </LinearLayout>
