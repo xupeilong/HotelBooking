@@ -4,24 +4,31 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_card_order"
     android:layout_margin="5dp"
-    android:orientation="vertical" >
+    android:orientation="vertical" 
+    style="@style/card"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/card_item"
         >
         <ImageView 
             android:id="@+id/icon_hotel"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/icon_hotel"
+            android:layout_centerVertical="true"
             />
         <TextView 
             android:id="@+id/text_hotel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="酒店"
+            android:textColor="#666666"
             android:layout_toRightOf="@id/icon_hotel"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="3dp"
             />
         
         <TextView 
@@ -29,8 +36,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="确认中"
+            android:textColor="#666666"
             android:background="@drawable/bg_grey"
             android:layout_toRightOf="@id/text_hotel"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
             />
                 
         <TextView 
@@ -38,19 +52,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="998"
+            android:textSize="20dp"
+            android:textColor="#ff9a14"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             />
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="￥"
             android:layout_toLeftOf="@id/text_money_count"
+            android:layout_centerVertical="true"
             />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/card_item"
         >
         
         <TextView 
@@ -60,6 +79,7 @@
             android:text="XXX大酒店"
             android:textSize="18dp"
             android:textColor="#000000"
+            android:padding="5dp"
             />
         
         <TextView 
@@ -67,7 +87,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="南京路213号"
+            android:textColor="#666666"
             android:layout_below="@id/text_hotel_name"
+            android:padding="3dp"
+            
+            android:drawableLeft="@drawable/icon_poi"
+            android:drawablePadding="3dp"
             />
         
         <TextView
@@ -75,7 +100,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3晚 1月1日 - 1月4日"
+            android:textColor="#666666"
             android:layout_below="@id/text_hotel_address"
+            android:padding="3dp"
+            android:drawableLeft="@drawable/icon_night"
+            android:drawablePadding="3dp"
             />
         
         <TextView 
@@ -83,7 +112,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1间 豪华客房"
+            android:textColor="#666666"
             android:layout_below="@id/text_order_date"
+            android:padding="3dp"
+            android:drawableLeft="@drawable/icon_house"
+            android:drawablePadding="3dp"
             />
         
         <TextView 
@@ -91,24 +124,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="张三"
+            android:textColor="#666666"
             android:layout_alignParentRight="true"
             android:layout_alignBottom="@id/text_order_house_name"
+            android:drawableLeft="@drawable/icon_user"
+            android:drawablePadding="3dp"
             />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/card_item"
         >
         
         <TextView
             android:id="@+id/text_cancel_button" 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="取消"
+            android:text="取消订单"
             android:textColor="#099fde"
             android:background="@drawable/bg_order_button"
             android:layout_alignParentRight="true"
+            android:padding="10dp"
             />
     </RelativeLayout>
 

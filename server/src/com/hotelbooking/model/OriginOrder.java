@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "orderprocess_order")
+@Table(name = "OrderProcess_order")
 public class OriginOrder {
 	
 	@Id

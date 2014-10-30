@@ -125,7 +125,7 @@ public class HttpDataLoader {
 		protected void onPostExecute(String result) {
 			// TODO Auto-generated method stub
 			super.onPostExecute(result);
-				Log.d("dataa", String.valueOf(result));
+			Log.d("dataa", String.valueOf(result));
 			handler.handle(result, code);
 		}
 	}

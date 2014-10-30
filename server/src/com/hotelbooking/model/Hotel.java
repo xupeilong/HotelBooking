@@ -8,7 +8,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "orderprocess_hotel")
+@Table(name = "OrderProcess_hotel")
 public class Hotel {
 	
 	@Id

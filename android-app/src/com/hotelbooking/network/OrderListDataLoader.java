@@ -10,6 +10,8 @@ import org.json.JSONTokener;
 
 import android.content.Context;
 import android.provider.SyncStateContract.Constants;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.hotelbooking.HotelListActivity;
 import com.hotelbooking.OrderActivity;
@@ -44,6 +46,11 @@ public class OrderListDataLoader implements HttpDataHandler{
 
 	@Override
 	public void handle(String data, int requestCode) {
+		if (data == null)
+		{
+			Toast.makeText(orderActivity, "ÍøÂç´íÎó£¬Çë¼ì²éÍøÂç", Toast.LENGTH_LONG).show();
+			return;
+		}
 		boolean isLast = false;
 		List<Order> orders = new ArrayList<Order>();
 		JSONTokener tokener = new JSONTokener(data);
@@ -66,7 +73,7 @@ public class OrderListDataLoader implements HttpDataHandler{
 						obj.getInt("house_count"),
 						obj.getString("house_name"),
 						obj.getString("customer_name"));
-				array.put(obj);
+				orders.add(order);
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

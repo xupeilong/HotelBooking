@@ -1,13 +1,17 @@
 package com.hotelbooking;
 
+import com.hotelbooking.utils.UserChecker;
+
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
+import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.CalendarView;
 import android.widget.Toast;
 import android.widget.CalendarView.OnDateChangeListener;
@@ -16,6 +20,11 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
 	TextView button;
+	
+	private ActionBar actionBar;
+	private View actionBarView;
+	
+	private TextView tvMyOrderBtn;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +36,34 @@ public class MainActivity extends Activity {
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
 				Gravity.CENTER);
-		View actionBarView = LayoutInflater.from(this).inflate(
+		actionBarView = LayoutInflater.from(this).inflate(
 				R.layout.action_bar_main, null);
-		ActionBar actionBar = getActionBar();
+		actionBar = getActionBar();
 		actionBar.setCustomView(actionBarView, layoutParams);
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		
+		initViews();
+		initListeners();
+		
+	}
+	
+	private void initViews()
+	{
+		tvMyOrderBtn = (TextView) actionBarView.findViewById(R.id.text_my_order_bar);
+	}
+	
+	private void initListeners()
+	{
+		tvMyOrderBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				UserChecker userChecker = new UserChecker(MainActivity.this);
+				userChecker.startActivityAfterLogin(MainActivity.this, OrderActivity.class);
+			}
+		});
 	}
 
 	@Override

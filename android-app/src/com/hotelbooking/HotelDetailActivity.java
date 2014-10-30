@@ -1,5 +1,6 @@
 package com.hotelbooking;
 
+import java.util.Date;
 import java.util.List;
 
 import com.hotelbooking.R.id;
@@ -8,8 +9,12 @@ import com.hotelbooking.model.House;
 import com.hotelbooking.network.HotelInfoDataLoader;
 import com.hotelbooking.network.utils.PictureLoader;
 import com.hotelbooking.utils.Const;
+import com.hotelbooking.utils.DateFormater;
+import com.hotelbooking.utils.OrderHelper;
+import com.hotelbooking.utils.Result;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActionBar.LayoutParams;
@@ -26,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class HotelDetailActivity extends Activity {
 	
@@ -38,6 +44,34 @@ public class HotelDetailActivity extends Activity {
 	private LinearLayout llHouses;
 	
 	private int hotelId;
+	
+	private int count = 1;
+	private Date checkinDate = DateFormater.toDate("2014-10-30");
+	private Date checkoutDate = DateFormater.toDate("2014-11-3");;
+	private String name = "test user";
+	private String message = "test msg";
+	
+	private static final int RQF_PAY = 1;
+
+	private static final int RQF_LOGIN = 2;
+	
+	private Handler mHandler = new Handler() {
+		public void handleMessage(android.os.Message msg) {
+			Result result = new Result((String) msg.obj);
+
+			switch (msg.what) {
+			case RQF_PAY:
+			case RQF_LOGIN: {
+				Toast.makeText(HotelDetailActivity.this, result.getResult(),
+						Toast.LENGTH_SHORT).show();
+
+			}
+				break;
+			default:
+				break;
+			}
+		};
+	};
 	
 	private void initViews()
 	{
@@ -73,7 +107,7 @@ public class HotelDetailActivity extends Activity {
 		
 	}
 	
-	public void onDataReady(Hotel hotel)
+	public void onDataReady(final Hotel hotel)
 	{
 		tvHotelName.setText(hotel.getName());
 		tvLevel.setText(hotel.getLevel());
@@ -85,7 +119,7 @@ public class HotelDetailActivity extends Activity {
 		List<House> houses = hotel.getHouses();
 		
 		LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		for (House house: houses)
+		for (final House house: houses)
 		{
 			View houseView = inflater.inflate(R.layout.item_house, llHouses, false);
 			TextView tvName = (TextView) houseView.findViewById(R.id.text_house_name);
@@ -116,13 +150,14 @@ public class HotelDetailActivity extends Activity {
 					if (Const.currentUser != null)
 					{
 //						intent.setClass(HotelDetailActivity.this, cls)
+						OrderHelper.order(HotelDetailActivity.this, mHandler, name, message, hotel, house, count, checkinDate, checkoutDate);
 					}
 					else
 					{
 						intent.setClass(HotelDetailActivity.this, LoginActivity.class);
-						
+						startActivity(intent);
 					}
-					startActivity(intent);
+					
 				}
 			});
 		}

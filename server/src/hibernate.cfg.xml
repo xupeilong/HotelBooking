@@ -7,7 +7,7 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/hotel</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/Hotel</property>
         <property name="connection.username">root</property>
         <property name="connection.password">sdp123</property>
          
@@ -36,6 +36,7 @@
 		<mapping class="com.hotelbooking.model.User"/>
 		<mapping class="com.hotelbooking.model.OriginOrder"/>
 		<mapping class="com.hotelbooking.model.UserOrder"/>
+		<mapping class="com.hotelbooking.model.AliPayLog"/>
           
     </session-factory>
 </hibernate-configuration>

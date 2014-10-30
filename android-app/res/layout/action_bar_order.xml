@@ -17,8 +17,8 @@
         />
  	
     <TextView
-        android:id="@+id/text_my_order_bar"
-        android:text="订单" 
+        android:id="@+id/text_register_action_bar"
+        android:text="" 
         android:textColor="#ffffff"
         android:textSize="15dp"
         android:layout_width="?android:attr/actionBarSize"
@@ -26,6 +26,7 @@
         android:background="@drawable/bg_action_bar_3"
         android:gravity="center"
         android:layout_alignParentRight="true"
+        android:visibility="invisible"
         />
     
     <TextView
@@ -34,11 +35,11 @@
         android:layout_height="fill_parent"
         android:background="@drawable/bg_action_bar_2"
         android:gravity="center"
-        android:text="酒店搜索" 
+        android:text="全部订单" 
         android:textColor="#ffffff"
         android:textSize="25dp"
         android:layout_toRightOf="@id/button_back"
-        android:layout_toLeftOf="@id/text_my_order_bar"/>
+        android:layout_toLeftOf="@id/text_register_action_bar"/>
 
     
 

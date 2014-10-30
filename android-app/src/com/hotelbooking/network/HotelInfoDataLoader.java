@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import android.widget.Toast;
+
 import com.hotelbooking.HotelDetailActivity;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.House;
@@ -34,6 +36,11 @@ public class HotelInfoDataLoader implements HttpDataHandler {
 
 	@Override
 	public void handle(String data, int requestCode) {
+		if (data == null)
+		{
+			Toast.makeText(hotelDetailActivity, "ÍøÂç´íÎó£¬Çë¼ì²éÍøÂç", Toast.LENGTH_LONG).show();
+			return;
+		}
 		Hotel hotel = null;
 		List<House> houses = new ArrayList<House>();
 		JSONTokener tokener = new JSONTokener(data);

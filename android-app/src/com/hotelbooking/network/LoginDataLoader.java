@@ -12,6 +12,7 @@ import org.json.JSONTokener;
 
 import android.content.Context;
 import android.provider.SyncStateContract.Constants;
+import android.widget.Toast;
 
 import com.hotelbooking.HotelListActivity;
 import com.hotelbooking.LoginActivity;
@@ -57,6 +58,11 @@ public class LoginDataLoader implements HttpDataHandler{
 	@Override
 	public void handle(String data, int requestCode) {
 
+		if (data == null)
+		{
+			Toast.makeText(loginActivity, "ÍøÂç´íÎó£¬Çë¼ì²éÍøÂç", Toast.LENGTH_LONG).show();
+			return;
+		}
 		List<Hotel> hotels = new ArrayList<Hotel>();
 		JSONTokener tokener = new JSONTokener(data);
 		int resultCode = -1;
@@ -65,8 +71,9 @@ public class LoginDataLoader implements HttpDataHandler{
 		try {
 			JSONObject obj = (JSONObject) tokener.nextValue();
 			resultCode = obj.getInt("result_code");
-			int id = obj.getInt("id");
-			String name = obj.getString("name");
+			JSONObject userObj = obj.getJSONObject("user");
+			int id = userObj.getInt("id");
+			String name = userObj.getString("name");
 			user = new User(id, name); 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

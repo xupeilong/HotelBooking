@@ -1,5 +1,6 @@
 package com.hotelbooking;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.hotelbooking.Adapter.OrderListAdapter;
@@ -10,8 +11,14 @@ import com.hotelbooking.ui.LoadMoreListView.OnLoadMoreListener;
 import com.hotelbooking.utils.Const;
 
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.ActionBar.LayoutParams;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
 import android.widget.ListView;
 
 public class OrderActivity extends Activity {
@@ -19,8 +26,9 @@ public class OrderActivity extends Activity {
 	private static final int PAGE_SIZE = 7;
 	
 	private LoadMoreListView listView;
+	private View emptyView;
 	private OrderListAdapter adapter;
-	private List<Order> orders;
+	private List<Order> orders = new ArrayList<Order>();
 	private int pageNum;
 
 	@Override
@@ -28,7 +36,19 @@ public class OrderActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order);
 		
+		ActionBar.LayoutParams layoutParams = new LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
+				Gravity.CENTER);
+		View actionBarView = LayoutInflater.from(this).inflate(
+				R.layout.action_bar_order, null);
+		ActionBar actionBar = getActionBar();
+		actionBar.setCustomView(actionBarView, layoutParams);
+		actionBar.setDisplayShowCustomEnabled(true);
+		actionBar.setDisplayShowHomeEnabled(false);
+		actionBar.setDisplayShowTitleEnabled(false);
+		
 		listView = (LoadMoreListView) findViewById(R.id.list_orders);
+		emptyView = findViewById(R.id.view_empty);
 		listView.setOverScrollMode(ListView.OVER_SCROLL_NEVER);
 		startGettingOrderListData();
 		listView.setOnLoadMoreListener(new OnLoadMoreListener() {
@@ -39,12 +59,14 @@ public class OrderActivity extends Activity {
 			}
 		});
 		
+		
 	}
 	
 	public void onOrderDataReady(boolean isLast, List<Order> orders)
 	{
+		Log.d("dataa", orders.size() + "");
 		this.orders.addAll(orders);
-		if (orders == null)
+		if (adapter == null)
 		{
 			adapter = new OrderListAdapter(this, orders);
 			listView.setAdapter(adapter);
@@ -52,7 +74,14 @@ public class OrderActivity extends Activity {
 		adapter.notifyDataSetChanged();
 		listView.onLoadComplete();
 		if (isLast)
+		{
+			if (this.orders.size() == 0)
+			{
+				emptyView.setVisibility(View.VISIBLE);
+				listView.setVisibility(View.INVISIBLE);
+			}
 			listView.onLoadEnd();
+		}
 	}
 	
 	private void startGettingOrderListData()

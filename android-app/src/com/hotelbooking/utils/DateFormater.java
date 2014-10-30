@@ -7,13 +7,19 @@ import java.util.Date;
 public class DateFormater {
 	public static String format1(Date timestamp)
 	{
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmssSSS");
 		return dateFormat.format(timestamp);
 	}
 	
 	public static String format2(Date timestamp)
 	{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		return dateFormat.format(timestamp);
+	}
+	
+	public static String format3(Date timestamp)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("M‘¬d»’");
 		return dateFormat.format(timestamp);
 	}
 	
@@ -27,5 +33,10 @@ public class DateFormater {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static int getDiffDays(Date earlyDate, Date lateDays) {
+		int daySec = 24 * 60 * 60 * 1000;
+		return (int) (lateDays.getTime() / daySec - earlyDate.getTime() / daySec);
 	}
 }

@@ -52,12 +52,12 @@ public class OrderListAdapter extends BaseAdapter{
 		if (convertView == null)
 		{
 			LayoutInflater inflater = (LayoutInflater) orderActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.item_order, parent);
+			convertView = inflater.inflate(R.layout.item_order, parent, false);
 			viewHolder = new ViewHolder();
 			viewHolder.tvStatus = (TextView) convertView.findViewById(R.id.text_status);
 			viewHolder.tvMoneyCount = (TextView) convertView.findViewById(R.id.text_money_count);
 			viewHolder.tvHotelName = (TextView) convertView.findViewById(R.id.text_hotel_name);
-			viewHolder.tvAddress = (TextView) convertView.findViewById(R.id.text_address);
+			viewHolder.tvAddress = (TextView) convertView.findViewById(R.id.text_hotel_address);
 			viewHolder.tvOrderDate = (TextView) convertView.findViewById(R.id.text_order_date);
 			viewHolder.tvHouseName = (TextView) convertView.findViewById(R.id.text_order_house_name);
 			viewHolder.tvCustomerName = (TextView) convertView.findViewById(R.id.text_cutomer_name);
@@ -70,11 +70,11 @@ public class OrderListAdapter extends BaseAdapter{
 		Order order = orders.get(position);
 		
 		viewHolder.tvStatus.setText(OrderHelper.getStatusString(order.getStatusCode()));
-		viewHolder.tvMoneyCount.setText(order.getPayMoney());
+		viewHolder.tvMoneyCount.setText(String.valueOf(order.getPayMoney()));
 		viewHolder.tvHotelName.setText(order.getHotelName());
 		viewHolder.tvAddress.setText(order.getHotelAddress());
 		viewHolder.tvOrderDate.setText(OrderHelper.getOrderDateString(order.getCheckInDate(), order.getCheckOutDate()));
-		viewHolder.tvHouseName.setText(order.getHouseName());
+		viewHolder.tvHouseName.setText(OrderHelper.getOrderHouseString(order.getHouseCount(), order.getHouseName()));
 		viewHolder.tvCustomerName.setText(order.getCustomerName());
 		viewHolder.tvCancelBtn.setOnClickListener(new OnClickListener() {
 			

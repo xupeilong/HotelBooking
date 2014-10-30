@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "orderprocess_housingtype")
+@Table(name = "OrderProcess_housingtype")
 public class House {
 	
 	@Id

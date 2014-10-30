@@ -62,6 +62,7 @@ public class OrderService {
 			House house = houseDAO.getHouseById(originOrder.getHouseId());
 			Hotel hotel = hotelDAO.getHotelById(house.getHotelId());
 			JSONObject obj = new JSONObject();
+			obj.put("id", userOrder.getId());
 			obj.put("state_code", originOrder.getStateCode());
 			obj.put("pay_money", originOrder.getPayMoney());
 			obj.put("hotel_name", hotel.getHotelName());
@@ -70,6 +71,7 @@ public class OrderService {
 			obj.put("checkout_date", DateFormater.format2(originOrder.getCheckOutDate()));
 			obj.put("house_count", originOrder.getRoomNum());
 			obj.put("house_name", house.getName());
+			obj.put("customer_name", originOrder.getCustomerName());
 			array.add(obj);
 		}
 		resultObj.put("orders", array);

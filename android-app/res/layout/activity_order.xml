@@ -8,11 +8,32 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".OrderActivity" >
 
+    <com.hotelbooking.ui.LoadMoreListView
+        android:id="@+id/list_orders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+    </com.hotelbooking.ui.LoadMoreListView>
 
-    <com.hotelbooking.ui.LoadMoreListView 
-        android:id="@+id/list_orders" 
+    <LinearLayout
+        android:id="@+id/view_empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-    </com.hotelbooking.ui.LoadMoreListView>
+        android:gravity="center"
+        android:visibility="invisible" 
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/pic_page_nodata" />
+
+        <TextView
+            android:id="@+id/text_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:paddingTop="10dp"
+            android:text="您还没有提交过订单" />
+    </LinearLayout>
+
 </RelativeLayout>

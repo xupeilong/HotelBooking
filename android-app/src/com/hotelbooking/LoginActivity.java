@@ -2,6 +2,7 @@ package com.hotelbooking;
 
 import com.hotelbooking.model.User;
 import com.hotelbooking.network.LoginDataLoader;
+import com.hotelbooking.utils.Const;
 import com.hotelbooking.utils.InputChecker;
 
 import android.location.Location;
@@ -56,7 +57,7 @@ public class LoginActivity extends Activity {
 		actionBar.setDisplayShowTitleEnabled(false);
 		
 		try {
-			nextPageClass = (Class) getIntent().getExtras().get("next_page_class");	
+			nextPageClass = (Class) getIntent().getExtras().get("next_activity_class");	
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -105,14 +106,17 @@ public class LoginActivity extends Activity {
 	{
 		if (resultCode == 0)
 		{
+			Const.currentUser = user;
 			Intent intent = new Intent();
 			if (nextPageClass != null)
 			{
 				intent.setClass(this, nextPageClass);
+				intent.putExtras(getIntent().getExtras());
 			}
 			else
 				intent.setClass(this, MainActivity.class);
 			startActivity(intent);
+			finish();
 		}
 		else if (resultCode == 1)
 		{
