@@ -70,7 +70,7 @@ public class OrderHelper {
 		sb.append("\"&out_trade_no=\"");
 		sb.append(getOutTradeNo());
 		sb.append("\"&subject=\"");
-		sb.append(getSubjectString(hotel, house, count, checkinDate, checkoutDate));
+		sb.append(URLEncoder.encode(getSubjectString(hotel, house, count, checkinDate, checkoutDate)));
 		sb.append("\"&body=\"");
 		sb.append(getBodyString(name, message, hotel, house, count, checkinDate, checkoutDate));
 		sb.append("\"&total_fee=\"");

@@ -30,7 +30,9 @@ class HotelInfoPipeline(object):
             conn = mysql.connector.connect(user='root', password='sdp123', database='hotel', use_unicode=True)
             cursor = conn.cursor()
             v = [item['hotel_id'], item['level'], item['area'], item['image_file_name']]
-            cursor.execute('insert into hotel_info(hotel_id, level, area, image_path) values(%s,%s,%s,%s)', v)
+            cursor.execute('insert into app_hotel_info(hotel_id, level, area, image_path) values(%s,%s,%s,%s)', v)
+            print '***********************************'
+            print v[0]
             conn.commit()
             cursor.close()
             conn.close()
@@ -40,7 +42,7 @@ class HotelInfoPipeline(object):
 class HouseInfoPipeline(object):
 
     def get_house(self, cursor, hotel_id, house_name):
-        sql = 'select * from orderprocess_housingtype where hotelId_id = ' + str(hotel_id) + ' and roomName like \'' + house_name + '\''
+        sql = 'select * from OrderProcess_housingtype where hotelId_id = ' + str(hotel_id) + ' and roomName like \'' + house_name + '\''
         cursor.execute(sql)
         return cursor.fetchall()
 
@@ -61,12 +63,12 @@ class HouseInfoPipeline(object):
             house_name_1 = house_name[0:-2] + '__'
             values = values + self.get_house(cursor, hotel_id, house_name_1)
             for v in values:
-                cursor.execute('select * from house_info where house_id = ' + str(v[0]))
+                cursor.execute('select * from app_house_info where house_id = ' + str(v[0]))
                 vv = cursor.fetchall()
                 if len(vv) > 0:
                     continue
                 v = [v[0], item['image_file_name']]
-                cursor.execute('insert into house_info(house_id, image_path) values(%s,%s)', v)
+                cursor.execute('insert into app_house_info(house_id, image_path) values(%s,%s)', v)
 
             conn.commit()
             cursor.close()

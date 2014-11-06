@@ -21,6 +21,7 @@ public class AliPayService {
 				totalFee, body, gmtCreate, gmtPayment);
 		AliPayLogDAO aliPayLogDAO = new AliPayLogDAO();
 		aliPayLogDAO.save(aliPayLog);
+		
 	}
 
 }

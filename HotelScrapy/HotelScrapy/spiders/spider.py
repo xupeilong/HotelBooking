@@ -19,14 +19,13 @@ class DmozSpider(scrapy.Spider):
     "丽江": "lijiang37", 
     "昆明": "kunming34", 
     "合肥": "qufu143", 
-    "上海市": "shanghai2",
     "上海": "shanghai2",
     "中山": "zhongshan553", 
     "丽江": "lijiang37", 
     "南京": "nanjing12", 
     "南宁": "nanning380", 
     "厦门": "xiamen25",
-    "台北市": "taipei617", 
+    "台北": "taipei617", 
     "吉林": "baishanD10215_3886", 
     "合肥": "hefei278", 
     "哈尔滨": "harbin5", 
@@ -52,21 +51,31 @@ class DmozSpider(scrapy.Spider):
     "长沙": "changsha206", 
     "陕西": "xi'an10", 
     "青岛": "qingdao7", 
-    "香港": "hong%20kong58", 
+    "香港": "hong%20kong58",
+    "雅安": "ya'an3277",
+    "沈阳": "shenyang451",
+    "三亚": "sanya43",
+    "郑州": "zhengzhou559",
+    "潍坊": "weifang475",
+    "齐齐哈尔": "qiqihar149",
+    "白山": "baishan3886",
+    "长春": "changchun158"
     }
+
+    to_do_hotel_list = []
 
 
 
     def start_requests(self):
         conn = mysql.connector.connect(user='root', password='sdp123', database='hotel', use_unicode=True)
         cursor = conn.cursor()
-        cursor.execute('select * from orderprocess_hotel')
+        cursor.execute('select * from OrderProcess_hotel')
         values = cursor.fetchall()
         # values = cursor.fetchmany(1)
         # cursor.fetchall()
         for v in values:
             #check repeat
-            cursor.execute("select * from hotel_info where hotel_id = " + str(v[0]))
+            cursor.execute("select * from app_hotel_info where hotel_id = " + str(v[0]))
             vv = cursor.fetchall()
             if (len(vv) > 0):
                 continue
@@ -79,21 +88,61 @@ class DmozSpider(scrapy.Spider):
             name1 = name1.replace('\n', '')
             # print name1
             req = ''
+            
+            city = v[2]
+            city = city.replace(' ', '')
+            city = city.replace('\xca\xd0', '')
+            if len(city) > 10:
+                continue
+            if city.encode('utf-8') == '素叻他尼':
+                continue
+            if city.encode('utf-8') == '曼谷':
+                continue
+            if city.encode('utf-8') == '长白山':
+                continue
+            name1 = name1.replace(city.encode('gbk'), '')
+            name1 = name1.replace('\xbe\xc6\xb5\xea', '')
+            name1 = name1.replace('\xbf\xec\xbd\xdd', '')
+            print quote(name1)
+            print city
+            path = (v[0], base + self.city[city.replace(' ', '').encode('utf-8')] + "/k2" + quote(name1))
+            self.to_do_hotel_list.append(path)
+
+        for path in self.to_do_hotel_list:
             try:
-                print str(v[0]) + name1
-                req = scrapy.Request(base + self.city[v[2].encode('utf-8')] + "/k2" + quote(name1))
-                req.meta['hotel_id'] = v[0]   
+                req = scrapy.Request(path[1])
+                req.meta['hotel_id'] = path[0]   
                 yield req
+                print "******* Hotels to do: "
+                print len(self.to_do_hotel_list)
             except Exception, e:
+                raise e
                 pass
+        
             
 
             
 
     def parse(self, response):
         hotel_id = response.meta['hotel_id']
+        is_not_found = response.xpath("/html/body[@id='mainbody']/form[@id='aspnetForm']/div[@id='base_bd']/div[@id='J_mainBox']"
+            + "/div[@class='base_main3']/div[@id='J_noticeHtml']/div[@id='no_tips']/div[@id='divNoresult']/strong").extract()
+        if len(is_not_found):
+            url = response.url
+            if url.find('k2') >= 0:
+                url = url.replace('k2', 'k1')
+                req = scrapy.Request(url)
+                req.meta['hotel_id'] = hotel_id
+                yield req
+            else:
+                print '******************** Not found: id = ' + str(hotel_id)
+            return
         hotel_page_id = response.xpath('/html/body/form/div/div/div/div[@id="hotel_list"]/div[1]/@id').extract()[0]
         # print hotel_page_id
+        try:
+            pass
+        except Exception, e:
+            raise e
         hotel_image_url = response.xpath("/html/body[@id='mainbody']/form[@id='aspnetForm']/div[@id='base_bd']/"
          + "div[@id='J_mainBox']/div[@class='base_main3']/div[@id='hotel_list']/div[1]/"
          + "ul[@class='searchresult_info']/li[@class='pic_medal']/div[@class='hotel_pic']/a/"
@@ -110,13 +159,21 @@ class DmozSpider(scrapy.Spider):
         yield req
 
     def parse_hotel(self, response):
+        
         hotel_id = response.meta['hotel_id']
         hotel_page_id = response.meta['hotel_page_id']
         hotel_image_url = response.meta['hotel_image_url']
+        print '***********************************'
+        print hotel_id
         item = HotelInfo()
-        level = response.xpath("/html/body[@id='mainbody']/form[@id='aspnetForm']/div[@id='base_bd']"
-         + "/div[@class='htl_info_com layoutfix']/div[@class='htl_info']/div[@class='grade']/"
-         + "span/@title").extract()[0].split(u'\uff08')[0]
+        level = ""
+        try:
+            level = response.xpath("/html/body[@id='mainbody']/form[@id='aspnetForm']/div[@id='base_bd']"
+            + "/div[@class='htl_info_com layoutfix']/div[@class='htl_info']/div[@class='grade']/"
+            + "span/@title").extract()[0].split(u'\uff08')[0]
+        except Exception, e:
+            level = "0"
+        
         if len(level) > 3:
             level = level[-3:]
         
@@ -142,7 +199,7 @@ class DmozSpider(scrapy.Spider):
         house_list_url = 'http://hotels.ctrip.com/Domestic/tool/AjaxHotelRoomListForDetail.aspx?hotel=' + str(hotel_page_id)
         req = scrapy.Request(house_list_url, callback=self.parse_house)
         req.meta['hotel_id'] = hotel_id
-        yield req
+        # yield req
 
     def parse_house(self, response):
         hotel_id = response.meta['hotel_id']        
