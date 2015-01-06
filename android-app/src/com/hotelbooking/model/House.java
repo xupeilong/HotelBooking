@@ -1,6 +1,8 @@
 package com.hotelbooking.model;
 
-public class House {
+import java.io.Serializable;
+
+public class House implements Serializable{
 
 	private int id;
 	private String name;

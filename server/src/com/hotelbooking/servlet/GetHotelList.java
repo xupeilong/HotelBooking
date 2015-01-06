@@ -35,16 +35,51 @@ public class GetHotelList extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String sortType = request.getParameter("type");
 		int pageNum = Integer.parseInt(request.getParameter("page"));
 		int pageSize = Integer.parseInt(request.getParameter("count"));
+		int latitude = 0;
+		int longitude = 0;
+		String keyword = "";
+		String cityName = "";
+		int lowPrice = 0;
+		int highPrice = 0;
+		try {
+			latitude = Integer.parseInt(request.getParameter("latitude"));
+			longitude = Integer.parseInt(request.getParameter("longitude"));
+		} catch (Exception e) {
+			latitude = 0;
+			longitude = 0;
+		}
 		
-		String result = HotelService.getHotelsJsonString(sortType, pageNum, pageSize, 0, 0, 0, 0);
+		try {
+			cityName = request.getParameter("city");
+			System.out.println("***param: city=" + cityName);
+		} catch (Exception e) {
+			cityName = "";
+		}
 		
+		try {
+			keyword = request.getParameter("keyword");
+		} catch (Exception e) {
+			keyword = "";
+		}
+		
+		try {
+			lowPrice = Integer.parseInt(request.getParameter("low"));
+			highPrice = Integer.parseInt(request.getParameter("high"));
+		} catch (Exception e) {
+			lowPrice = 0;
+			highPrice = 0;
+		}
+		
+		String result = HotelService.getHotelsJsonString(pageNum, pageSize,
+				latitude, longitude, cityName, keyword, lowPrice, highPrice);
+
 		response.setContentType("text/plain");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter writer = response.getWriter();
 		writer.write(result);
+		System.out.println("over");
 	}
 
 	/**

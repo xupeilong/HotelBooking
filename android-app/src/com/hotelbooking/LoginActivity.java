@@ -37,6 +37,7 @@ public class LoginActivity extends Activity {
 	
 	ActionBar actionBar;
 	View actionBarView;
+	private ImageView imgBackButton;
 	
 	private Class nextPageClass;
 
@@ -72,10 +73,19 @@ public class LoginActivity extends Activity {
 		etPassword = (EditText) findViewById(R.id.text_password);
 		btnLogin = (Button) findViewById(R.id.button_login);
 		tvRegister = (TextView) actionBarView.findViewById(R.id.text_register_action_bar);
+		imgBackButton = (ImageView) actionBarView.findViewById(R.id.button_back);
 	}
 	
 	public void initListeners()
 	{
+		imgBackButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				finish();
+			}
+		});
+		
 		btnLogin.setOnClickListener(new OnClickListener() {
 			
 			@Override

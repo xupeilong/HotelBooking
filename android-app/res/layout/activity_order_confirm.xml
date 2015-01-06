@@ -1,0 +1,315 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin" >
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        >
+
+        <TextView
+            android:id="@+id/text_hotel_name"
+            style="@style/search_item_main_text"
+            android:padding="5dp"
+            android:text="XX大酒店" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="房费："
+                android:textSize="15dp" />
+
+            <TextView
+                android:id="@+id/text_hotel_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="￥998"
+                android:textColor="#ff9913"
+                android:textSize="17dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_house"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:background="@drawable/selector_search_item_bg"
+         >
+
+        <TextView
+            android:id="@+id/text_house_name"
+            style="@style/search_item_main_text"
+            android:padding="5dp"
+            android:text="高级房" />
+
+        <TextView
+            android:id="@+id/text_house_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:drawablePadding="3dp"
+            android:drawableRight="@drawable/btn_flight_right"
+            android:text="1间"
+            android:textSize="15dp" />
+
+        
+    </RelativeLayout>
+    
+    <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/divider_grey" />
+
+    <RelativeLayout
+        android:id="@+id/view_checkin_date"
+        style="@style/search_item"
+        android:background="@drawable/selector_search_item_bg"
+         >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/btn_flight_right"
+            android:gravity="center_vertical" />
+
+        <TextView
+            android:id="@+id/text_checkin_date"
+            style="@style/search_item_main_text"
+            android:layout_alignParentLeft="true"
+            android:padding="5dp"
+            android:text="今天" />
+
+        <LinearLayout
+            android:id="@+id/text_plus_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:visibility="invisible" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/order_ic_minus_normal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/hotel_ic_plus_normal" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_checkin_label"
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_plus_minus"
+            android:padding="5dp"
+            android:text="入住"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/text_checkin_date_detail"
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_checkin_label"
+            android:text="1月1日" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/search_item"
+         >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/divider_grey" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:drawableLeft="@drawable/btn_flight_right"
+            android:gravity="center_vertical"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/text_checkout_date"
+            style="@style/search_item_main_text"
+            android:layout_alignParentLeft="true"
+            android:padding="5dp"
+            android:text="今天" />
+
+        <LinearLayout
+            android:id="@+id/text_plus_minus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/image_night_minus"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/selector_night_minus_button" />
+
+            <ImageView
+                android:id="@+id/image_night_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/selector_night_plus_button" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_checkout_label"
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_plus_minus"
+            android:padding="5dp"
+            android:text="离店"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/text_checkout_date_detail"
+            style="@style/search_item_sub_text"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@id/text_checkout_label"
+            android:text="1月1日" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/search_item">
+        
+         <TextView
+	        android:id="@+id/text_customer_label"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:gravity="center_vertical"
+	        android:text="入住人    "
+	        android:padding="5dp"
+	        android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/edit_customer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@id/text_customer_label"
+            android:hint="请填写"
+            android:padding="5dp"
+            android:singleLine="true"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider_grey" />
+
+    <RelativeLayout
+        style="@style/search_item" 
+         >
+
+        <ImageView
+            android:id="@+id/image_del_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/hotel_icon_page_del"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/edit_message_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:text="特别要求"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/edit_message"
+            android:background="@drawable/selector_search_item_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/image_del_button"
+            android:layout_toRightOf="@id/edit_message_label"
+            android:drawableRight="@drawable/btn_flight_right"
+            android:gravity="center_vertical"
+            android:hint="无"
+            android:padding="5dp"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider_grey" />
+
+    <RelativeLayout
+        style="@style/search_item"
+        >
+
+        <TextView
+            android:id="@+id/text_pay_type_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:padding="5dp"
+            android:text="付款方式"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/text_pay_type"
+            android:background="@drawable/selector_search_item_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/text_pay_type_label"
+            android:drawableRight="@drawable/btn_flight_right"
+            android:gravity="center_vertical"
+            android:hint="请选择"
+            android:padding="5dp"
+            android:textSize="20dp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/divider_grey" />
+
+    <TextView
+        android:id="@+id/text_confirm_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/selector_button"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="提交订单"
+        android:textColor="#ffffff"
+        android:textSize="20dp" />
+
+</LinearLayout>

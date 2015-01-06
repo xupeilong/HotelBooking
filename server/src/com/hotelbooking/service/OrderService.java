@@ -13,6 +13,8 @@ import com.hotelbooking.dao.UserDAO;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.House;
 import com.hotelbooking.model.OriginOrder;
+import com.hotelbooking.model.OriginOrderSearch;
+import com.hotelbooking.model.OriginProcess;
 import com.hotelbooking.model.Result;
 import com.hotelbooking.model.User;
 import com.hotelbooking.model.UserOrder;
@@ -21,27 +23,44 @@ import com.hotelbooking.util.DateFormater;
 public class OrderService {
 
 	public static Result placeOrder(int userId, String name, int houseId, int houseNum,
-			Date checkInDate, Date checkOutDate, String requestMessage)
+			Date checkInDate, Date checkOutDate, String requestMessage, String tradeNo, double totalFee)
 	{
 		String orderSource = "安卓手机应用";
 		Date nowDate = new Date(System.currentTimeMillis());
 		String orderNumber = DateFormater.format1(nowDate);
 		int stateCode = 2;
+		
+		
+		
 		HouseDAO houseDAO = new HouseDAO();
-		int payMoney = houseDAO.getHousePrice(houseId) * houseNum;
+		House house = houseDAO.getHouseById(houseId);
+		int payMoney = houseDAO.getHousePrice(houseId) * houseNum * DateFormater.getDiffDays(checkInDate, checkOutDate);
+		
+		HotelDAO hotelDAO = new HotelDAO();
+		Hotel hotel = hotelDAO.getHotelById(house.getHotelId());
+		
 		Date orderDate = nowDate;
 		UserDAO userDAO = new UserDAO();
 		OriginOrder originOrder = new OriginOrder(houseId, orderSource, orderNumber,
 				stateCode, houseNum, payMoney, orderDate, checkInDate, checkOutDate,
 				name, requestMessage);
 		OrderDAO orderDAO = new OrderDAO();
-		if (orderDAO.placeOrder(originOrder, userId))
+		if (orderDAO.placeOrder(originOrder, userId, tradeNo, totalFee))
 		{
+			OriginProcess originProcess = new OriginProcess(originOrder.getId());
+			OriginOrderSearch originOrderSearch = new OriginOrderSearch(originOrder.getId(),
+					originOrder.getOrderNumber(), hotel.getHotelName(), house.getName(), 
+					name, checkInDate, checkOutDate, orderSource);
+			orderDAO.saveProcess(originProcess);
+			orderDAO.saveOriginOrderSearch(originOrderSearch);
+			
 			Result result = new Result(0, "下单成功");
 			return result;
 		}
 		else
 			return new Result(1, "下单失败");
+		
+		
 	}
 	
 	public static String getOrderListJsonString(int userId, int pageNum, int pageSize)

@@ -11,7 +11,7 @@
         android:layout_width="?android:attr/actionBarSize"
         android:layout_height="fill_parent"
         android:padding="10dp"
-        android:background="@drawable/bg_action_bar_1"
+        android:background="@drawable/selector_actionbar_button_1"
         android:layout_alignParentLeft="true"
         />
  	
@@ -22,7 +22,7 @@
         android:textSize="15dp"
         android:layout_width="?android:attr/actionBarSize"
         android:layout_height="fill_parent"
-        android:background="@drawable/bg_action_bar_3"
+        android:background="@drawable/selector_actionbar_button_3"
         android:gravity="center"
         android:layout_alignParentRight="true"
         />
@@ -35,7 +35,7 @@
         android:gravity="center"
         android:text="会员注册" 
         android:textColor="#ffffff"
-        android:textSize="25dp"
+        android:textSize="20dp"
         android:layout_toRightOf="@id/button_back"
         android:layout_toLeftOf="@id/text_login_action_bar"/>
 

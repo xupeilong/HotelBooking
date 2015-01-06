@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:background="@drawable/pop_normal"
+	android:paddingBottom="25dp"  
+	android:paddingLeft="5dp"
+	android:paddingRight="5dp"
+	android:paddingTop="5dp"  
+    >
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        >
+        <TextView
+            android:id="@+id/text_hotel_name" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            />
+        <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  ￥"
+                    android:textColor="#ff9913"
+                    android:textSize="15dp" />
+        <TextView 
+            android:id="@+id/text_hotel_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            />
+    </LinearLayout>
+    
+	<TextView 
+	    android:id="@+id/text_detail_button"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="详情"
+	    android:background="@drawable/selector_button"
+	    android:paddingLeft="25dp"
+	    android:paddingRight="25dp"
+	    android:paddingTop="3dp"
+	    android:paddingBottom="3dp"
+	    android:layout_gravity="center_horizontal"
+	    />    
+
+</LinearLayout>

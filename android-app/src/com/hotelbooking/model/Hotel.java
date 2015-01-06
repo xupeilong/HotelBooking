@@ -1,8 +1,9 @@
 package com.hotelbooking.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Hotel {
+public class Hotel implements Serializable{
 
 	private int id;
 	private String name;
@@ -11,26 +12,34 @@ public class Hotel {
 	private int price;
 	private int distance;
 	private String image_path;
+	private String city;
 	
 	private String intro;
 	private String address;
 	private List<House> houses;
 	
+	private int latitude;
+	private int longitude;
+	
 	// for hotel list
-	public Hotel(int id, String name, String area, String level, int price, int distance, String image_path) {
+	public Hotel(int id, String name, String city, String area, String level, int price, int distance,
+			int latitude, int longitude, String image_path) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.city = city;
 		this.area = area;
 		this.level = level;
 		this.price = price;
 		this.distance = distance;
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.image_path = image_path;
 	}
 	
 	// for hotel detail
 	public Hotel(int id, String name, String level, String image_path, String intro, String area,
-			String address, List<House> houses) {
+			String address, int latitude, int longitude, List<House> houses) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -40,6 +49,8 @@ public class Hotel {
 		this.area = area;
 		this.address = address;
 		this.houses = houses;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 	public int getId() {
@@ -121,6 +132,31 @@ public class Hotel {
 	public void setHouses(List<House> houses) {
 		this.houses = houses;
 	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public int getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(int latitude) {
+		this.latitude = latitude;
+	}
+
+	public int getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(int longitude) {
+		this.longitude = longitude;
+	}
+
 	
 	
 	

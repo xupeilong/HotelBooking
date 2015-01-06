@@ -19,18 +19,33 @@ public class HotelDAO extends BaseDAO{
 		
 	}
 	
-	public List<Hotel> getHotelsByDefault(int pageNum, int pageSize)
+	public List<Hotel> getHotels(String cityName, String keyword, int lowPrice, int highPrice)
 	{
-		List<Hotel> hotels = listAll(Hotel.class, pageNum, pageSize);
+		if (cityName == null || cityName.equals("nearby"))
+			cityName = "";
+		if (keyword == null)
+			keyword = "";
+		List<Hotel> hotels = query("from Hotel where hotelName like ? and hotelCity like ?" ,
+				"%" + keyword + "%", "%" + cityName + "%");
+		System.out.println("***** db: " + cityName + " " + hotels.size());
+		List<Hotel> res = new ArrayList<Hotel>();
 		for (Hotel hotel: hotels)
 		{
+			if (lowPrice < highPrice)
+			{
+				int properPrice = getProperPrice(hotel.getId(), lowPrice, highPrice);
+				if (properPrice == -1)
+					continue;
+				hotel.setLowPrice(properPrice);
+			}
+			else
+				hotel.setLowPrice(getLowestPrice(hotel.getId()));
+			
 			HotelInfo info = getHotelInfoByHotelId(hotel.getId());
 			hotel.setInfo(info);
-			int lowPrice = getLowestPrice(hotel.getId());
-			hotel.setLowPrice(lowPrice);
+			res.add(hotel);
 		}
-		return hotels;
-		
+		return res;
 	}
 	
 	private HotelInfo getHotelInfoByHotelId(int hotelId)
@@ -39,6 +54,21 @@ public class HotelDAO extends BaseDAO{
 		if (info == null)
 			info = new HotelInfo("none", "none", "none");
 		return info;
+	}
+	
+	private int getProperPrice(int hotelId, int lowPrice, int highPrice)
+	{
+		List<House> houses = query("from House where hotelId = " + hotelId);
+		int min = -1;
+		for (House house: houses)
+		{
+			int id = house.getId();
+			HousePrice price = (HousePrice) loadObject("from HousePrice where houseId = " + id);
+			int p = price.getPrice();
+			if ((p >= lowPrice && p <= highPrice) && (min == -1 || p < min))
+				min = price.getPrice();
+		}
+		return min;
 	}
 	
 	private int getLowestPrice(int hotelId)

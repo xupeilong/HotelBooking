@@ -1,5 +1,7 @@
 package com.hotelbooking;
 
+import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +37,8 @@ import android.widget.Toast;
 
 public class HotelDetailActivity extends Activity {
 	
+	private ImageView imgBackButton;
+	
 	private TextView tvHotelName;
 	private TextView tvLevel;
 	private TextView tvIntro;
@@ -42,39 +46,18 @@ public class HotelDetailActivity extends Activity {
 	private TextView tvAddress;
 	private TextView tvArea;
 	private LinearLayout llHouses;
+	private TextView tvMapButton;
+	View actionBarView;
 	
 	private int hotelId;
+	private Hotel hotel;
 	
-	private int count = 1;
-	private Date checkinDate = DateFormater.toDate("2014-10-30");
-	private Date checkoutDate = DateFormater.toDate("2014-11-3");;
-	private String name = "test user";
-	private String message = "test msg";
-	
-	private static final int RQF_PAY = 1;
-
-	private static final int RQF_LOGIN = 2;
-	
-	private Handler mHandler = new Handler() {
-		public void handleMessage(android.os.Message msg) {
-			Result result = new Result((String) msg.obj);
-
-			switch (msg.what) {
-			case RQF_PAY:
-			case RQF_LOGIN: {
-				Toast.makeText(HotelDetailActivity.this, result.getResult(),
-						Toast.LENGTH_SHORT).show();
-
-			}
-				break;
-			default:
-				break;
-			}
-		};
-	};
+	private Calendar checkinDate;
+	private int nights;
 	
 	private void initViews()
 	{
+		
 		tvHotelName = (TextView) findViewById(R.id.text_hotel_name);
 		tvLevel = (TextView) findViewById(R.id.text_level);
 		tvIntro = (TextView) findViewById(R.id.text_intro);
@@ -82,6 +65,8 @@ public class HotelDetailActivity extends Activity {
 		tvAddress = (TextView) findViewById(R.id.text_address);
 		tvArea = (TextView) findViewById(R.id.text_area);
 		llHouses = (LinearLayout) findViewById(R.id.view_gourp_houses);
+		imgBackButton = (ImageView) actionBarView.findViewById(R.id.button_back);
+		tvMapButton = (TextView) actionBarView.findViewById(R.id.text_button_map);
 	}
 
 	@Override
@@ -92,7 +77,7 @@ public class HotelDetailActivity extends Activity {
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
 				Gravity.CENTER);
-		View actionBarView = LayoutInflater.from(this).inflate(
+		actionBarView = LayoutInflater.from(this).inflate(
 				R.layout.action_bar_hotel_info, null);
 		ActionBar actionBar = getActionBar();
 		actionBar.setCustomView(actionBarView, layoutParams);
@@ -100,15 +85,41 @@ public class HotelDetailActivity extends Activity {
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
 		
-		hotelId = getIntent().getIntExtra("hotel_id", -1);
+		
+		
+		Intent intent = getIntent();
+		hotelId = intent.getIntExtra("hotel_id", -1);
+		checkinDate = (Calendar) intent.getSerializableExtra("checkin_date");
+		nights = intent.getIntExtra("nights", 1);
+		
 		initViews();
 		HotelInfoDataLoader hotelInfoDataLoader = new HotelInfoDataLoader(this);
 		hotelInfoDataLoader.startGettingHotelInfo(hotelId);
 		
+		tvMapButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				Intent intent = new Intent();
+				intent.setClass(HotelDetailActivity.this, MapActivity.class);
+				intent.putExtra("type", 1);
+				intent.putExtra("hotel", (Serializable)hotel);
+				startActivity(intent);
+			}
+		});
+		
+		imgBackButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 	}
 	
 	public void onDataReady(final Hotel hotel)
 	{
+		this.hotel = hotel;
 		tvHotelName.setText(hotel.getName());
 		tvLevel.setText(hotel.getLevel());
 		tvIntro.setText(hotel.getIntro());
@@ -149,15 +160,17 @@ public class HotelDetailActivity extends Activity {
 					Intent intent = new Intent();
 					if (Const.currentUser != null)
 					{
-//						intent.setClass(HotelDetailActivity.this, cls)
-						OrderHelper.order(HotelDetailActivity.this, mHandler, name, message, hotel, house, count, checkinDate, checkoutDate);
+						intent.setClass(HotelDetailActivity.this, OrderConfirmActivity.class);
+						intent.putExtra("hotel", hotel);
+						intent.putExtra("house", house);
+						intent.putExtra("checkin_date", checkinDate);
+						intent.putExtra("nights", nights);
 					}
 					else
 					{
 						intent.setClass(HotelDetailActivity.this, LoginActivity.class);
-						startActivity(intent);
 					}
-					
+					startActivity(intent);
 				}
 			});
 		}

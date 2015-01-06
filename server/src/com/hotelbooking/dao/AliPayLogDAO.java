@@ -8,5 +8,11 @@ public class AliPayLogDAO extends BaseDAO{
 	{
 		save(log);
 	}
+	
+	public boolean isTradeNoExists(String tradeNo)
+	{
+		return loadObject("from AliPayLog where outTradeNo = ?", tradeNo) != null;
+	}
+	
 
 }

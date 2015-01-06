@@ -60,7 +60,8 @@ public class HotelInfoDataLoader implements HttpDataHandler {
 
 			hotel = new Hotel(obj.getInt("hotel_id"), obj.getString("name"),
 					obj.getString("level"), obj.getString("icon_image_path"),
-					obj.getString("intro"), obj.getString("area"), obj.getString("address"), houses);
+					obj.getString("intro"), obj.getString("area"), obj.getString("address"), 
+					obj.getInt("latitude"), obj.getInt("longitude"), houses);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

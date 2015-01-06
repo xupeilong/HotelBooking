@@ -1,4 +1,0 @@
-HotelBooking
-============
-
-For Boss Qian

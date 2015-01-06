@@ -9,5 +9,8 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_order">OrderActivity</string>
+    <string name="title_activity_map">MapActivity</string>
+    <string name="title_activity_order_confirm">OrderConfirmActivity</string>
+    <string name="title_activity_splash">SplashActivity</string>
 
 </resources>

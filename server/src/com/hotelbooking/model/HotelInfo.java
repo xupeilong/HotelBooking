@@ -24,6 +24,12 @@ public class HotelInfo {
 	@Column(name = "image_path")
 	private String imagePath;
 	
+	@Column(name = "latitude")
+	private int latitude;
+	
+	@Column(name = "longitude")
+	private int longitude;
+	
 	public HotelInfo() {
 	}
 	
@@ -72,6 +78,22 @@ public class HotelInfo {
 
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
+	}
+
+	public int getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(int latitude) {
+		this.latitude = latitude;
+	}
+
+	public int getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(int longitude) {
+		this.longitude = longitude;
 	}
 	
 	

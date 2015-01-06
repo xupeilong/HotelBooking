@@ -29,12 +29,19 @@ public class HotelListDataLoader implements HttpDataHandler{
 		this.hotelListActivity = hotelListActivity;
 	}
 	
-	public void startGettingHotelList(int page, int count)
+	
+	public void startGettingHotelList(int page, int count, int latitude, int longitude, String city, 
+			String keyword, int lowPrice, int highPrice)
 	{
 		List<Parameter> parameters = new ArrayList<Parameter>();
-		parameters.add(new Parameter("type", "default"));
 		parameters.add(new Parameter("page", page));
 		parameters.add(new Parameter("count", count));
+		parameters.add(new Parameter("latitude", latitude));
+		parameters.add(new Parameter("longitude", longitude));
+		parameters.add(new Parameter("city", city));
+		parameters.add(new Parameter("keyword", keyword));
+		parameters.add(new Parameter("low", lowPrice));
+		parameters.add(new Parameter("high", highPrice));
 		httpDataLoader = new HttpDataLoader(Const.GetHotelListURL, parameters, this, 0);
 		httpDataLoader.start();
 	}
@@ -57,10 +64,13 @@ public class HotelListDataLoader implements HttpDataHandler{
 				JSONObject obj = array.getJSONObject(i);
 				Hotel hotel = new Hotel(obj.getInt("id"),
 						obj.getString("name"),
+						obj.getString("city"),
 						obj.getString("area"),
 						obj.getString("level"),
 						obj.getInt("price"),
 						obj.getInt("distance"),
+						obj.getInt("latitude"),
+						obj.getInt("longitude"),
 						obj.getString("image_path"));
 				hotels.add(hotel);
 			}

@@ -27,6 +27,8 @@ public class HouseService {
 		obj.put("intro", "intro");
 		obj.put("address", hotel.getAddress());
 		obj.put("area", hotel.getInfo().getArea());
+		obj.put("latitude", hotelInfo.getLatitude());
+		obj.put("longitude", hotelInfo.getLongitude());
 		JSONArray houseArray = new JSONArray();
 		for (House house: houses)
 		{

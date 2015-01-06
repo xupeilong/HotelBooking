@@ -30,6 +30,9 @@ public class Hotel {
 	@Transient
 	private int lowPrice;
 	
+	@Transient
+	private int distance;
+	
 	public Hotel() {
 	}
 
@@ -80,5 +83,15 @@ public class Hotel {
 	public void setLowPrice(int lowPrice) {
 		this.lowPrice = lowPrice;
 	}
+
+	public int getDistance() {
+		return distance;
+	}
+
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+	
+	
 	
 }

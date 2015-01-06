@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class RegisterActivity extends Activity {
 	private EditText etPasswordRepeat;
 	private Button btnRegister;
 	private TextView tvLogin;
+	private ImageView imgBackBtn;
 	
 	private ActionBar actionBar;
 	private View actionBarView;
@@ -40,10 +42,18 @@ public class RegisterActivity extends Activity {
 		etName = (EditText) findViewById(R.id.edit_name);
 		btnRegister = (Button) findViewById(R.id.button_register);
 		tvLogin = (TextView) actionBarView.findViewById(R.id.text_login_action_bar);
+		imgBackBtn = (ImageView) actionBarView.findViewById(R.id.button_back);
 	}
 	
 	private void initListeners()
 	{
+		imgBackBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				finish();
+			}
+		});
 		btnRegister.setOnClickListener(new OnClickListener() {
 			
 			@Override

@@ -19,6 +19,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class OrderActivity extends Activity {
@@ -46,6 +48,14 @@ public class OrderActivity extends Activity {
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
+		ImageView imgBackBtn = (ImageView) actionBarView.findViewById(R.id.button_back);
+		imgBackBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				finish();
+			}
+		});
 		
 		listView = (LoadMoreListView) findViewById(R.id.list_orders);
 		emptyView = findViewById(R.id.view_empty);

@@ -17,6 +17,18 @@ public class DateFormater {
 		return dateFormat.format(timestamp);
 	}
 	
+	public static String format_refund(Date timestamp)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return dateFormat.format(timestamp);
+	}
+	
+	public static String format_batch_no_part(Date timestamp)
+	{
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+		return dateFormat.format(timestamp);
+	}
+	
 	public static Date toDate(String dateString)
 	{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -27,5 +39,10 @@ public class DateFormater {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	public static int getDiffDays(Date earlyDate, Date lateDays) {
+		int daySec = 24 * 60 * 60 * 1000;
+		return (int) (lateDays.getTime() / daySec - earlyDate.getTime() / daySec);
 	}
 }

@@ -29,10 +29,22 @@ class HotelInfoPipeline(object):
         if (isinstance(item, HotelInfo)):
             conn = mysql.connector.connect(user='root', password='sdp123', database='hotel', use_unicode=True)
             cursor = conn.cursor()
-            v = [item['hotel_id'], item['level'], item['area'], item['image_file_name']]
-            cursor.execute('insert into app_hotel_info(hotel_id, level, area, image_path) values(%s,%s,%s,%s)', v)
-            print '***********************************'
-            print v[0]
+
+            cursor.execute("select * from app_city where city_name = '" + item['city_name'] + "'")
+            values = cursor.fetchall()
+            if len(values):
+                current_count = values[0][2]
+                cursor.execute("update app_city set hotel_count = " + str(current_count + 1) + " where city_name = '" + item['city_name'] + "'")
+            else:
+                cursor.execute("insert into app_city(city_name, hotel_count) values(%s,%s)", [item['city_name'], 1])
+            conn.commit()
+
+            cursor.execute("select * from OrderProcess_hotel where id = " + str(item['hotel_id']))
+            source_name = cursor.fetchall()[0][1]
+
+            v = [item['hotel_id'], item['level'], item['area'], item['image_file_name'], source_name, item['real_name']]
+            cursor.execute('insert into app_hotel_info(hotel_id, level, area, image_path, source_name, real_name) values(%s,%s,%s,%s,%s,%s)', v)
+
             conn.commit()
             cursor.close()
             conn.close()

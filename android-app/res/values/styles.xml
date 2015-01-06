@@ -21,7 +21,8 @@
     </style>
 
     <style name="main_footbar_radio" parent="footbar">
-        <item name="android:padding">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
     </style>
     
     <style name="search_item">

@@ -14,6 +14,10 @@ class HotelInfo(scrapy.Item):
     hotel_id = scrapy.Field()
     area = scrapy.Field()
     level = scrapy.Field()
+    source_name = scrapy.Field()
+    real_name = scrapy.Field()
+    city_name = scrapy.Field()
+
 
 class HouseInfo(scrapy.Item):
     image_url = scrapy.Field()

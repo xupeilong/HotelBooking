@@ -1,7 +1,11 @@
 package com.hotelbooking.servlet;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -10,7 +14,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hotelbooking.model.Result;
 import com.hotelbooking.service.AliPayService;
+import com.hotelbooking.service.OrderService;
+import com.hotelbooking.util.Const;
 import com.hotelbooking.util.DateFormater;
 
 /**
@@ -131,15 +138,31 @@ public class AliPayNotify extends HttpServlet {
 		} catch (Exception e) {
 		}
 		
-		AliPayService.saveAlipayLog(notifyTime, notifyType, notifyId, signType,
-				sign, outTradeNo, subject, paymentType, tradeNo, tradeStatus,
-				sellerId, sellerEmail, buyerId, buyerEmail, totalFee, body,
-				gmtCreate, gmtPayment);
-
-		response.setContentType("text/plain");
-		response.setCharacterEncoding("UTF-8");
-		PrintWriter writer = response.getWriter();
-		writer.write("success");
+		String verifyUrl = "https://mapi.alipay.com/gateway.do?service=notify_verify&partner="
+				+ Const.DEFAULT_PARTNER
+				+ "&notify_id="
+				+ notifyId;
+		System.out.println("*******************PAY INFO: " + verifyUrl);
+		URL rearUrl = new URL(verifyUrl); 
+		URLConnection connection = rearUrl.openConnection();
+		connection.connect();
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+                connection.getInputStream()));
+		System.out.println("*******************PAY INFO: READER:" + in);
+        String res = in.readLine();
+        System.out.println("*******************PAY INFO: RES: " + res);
+		if (res.equals("true"))
+		{
+			AliPayService.saveAlipayLog(notifyTime, notifyType, notifyId, signType,
+					sign, outTradeNo, subject, paymentType, tradeNo, tradeStatus,
+					sellerId, sellerEmail, buyerId, buyerEmail, totalFee, body,
+					gmtCreate, gmtPayment);
+	
+			response.setContentType("text/plain");
+			response.setCharacterEncoding("UTF-8");
+			PrintWriter writer = response.getWriter();
+			writer.write("success");
+		}
 	}
 
 	/**
