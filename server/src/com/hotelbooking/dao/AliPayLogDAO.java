@@ -9,9 +9,9 @@ public class AliPayLogDAO extends BaseDAO{
 		save(log);
 	}
 	
-	public boolean isTradeNoExists(String tradeNo)
+	public boolean isNotifyExists(String notifyId)
 	{
-		return loadObject("from AliPayLog where outTradeNo = ?", tradeNo) != null;
+		return loadObject("from AliPayLog where notifyId = ?", notifyId) != null;
 	}
 	
 
