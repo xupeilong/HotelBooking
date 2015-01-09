@@ -3,6 +3,8 @@ package com.hotelbooking.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,8 +14,9 @@ public class HotelInfo {
 	@Id
 	private int id;
 	
-	@Column(name = "hotel_id")
-	private int hotelId;
+	@OneToOne
+	@JoinColumn(name = "hotel_id")
+	private Hotel hotel;
 	
 	@Column(name = "area")
 	private String area;
@@ -48,12 +51,13 @@ public class HotelInfo {
 		this.id = id;
 	}
 
-	public int getHotelId() {
-		return hotelId;
+	
+	public Hotel getHotel() {
+		return hotel;
 	}
 
-	public void setHotelId(int hotelId) {
-		this.hotelId = hotelId;
+	public void setHotel(Hotel hotel) {
+		this.hotel = hotel;
 	}
 
 	public String getArea() {

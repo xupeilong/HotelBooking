@@ -31,9 +31,9 @@ public class Const {
 	// for test
 //	public static final String AliPayNofityURL= "http://10.33.7.111:8080/HotelBooking/AliPayNotify";
 	
-	public static User currentUser = null;
+//	public static User currentUser = null;
 	// for test
-//	public static User currentUser = new User(8, "11");
+	public static User currentUser = new User(1, "TEST");
 	
 	
 	

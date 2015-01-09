@@ -25,32 +25,30 @@ public class HotelDAO extends BaseDAO{
 			cityName = "";
 		if (keyword == null)
 			keyword = "";
-		List<Hotel> hotels = query("from Hotel where hotelName like ? and hotelCity like ?" ,
+		List<HotelInfo> infos = query("from HotelInfo where hotel.hotelName like ? and hotel.hotelCity like ?" ,
 				"%" + keyword + "%", "%" + cityName + "%");
-		System.out.println("***** db: " + cityName + " " + hotels.size());
+		System.out.println("***** db: " + cityName + " " + infos.size());
 		List<Hotel> res = new ArrayList<Hotel>();
-		for (Hotel hotel: hotels)
+		for (HotelInfo info: infos)
 		{
 			if (lowPrice < highPrice)
 			{
-				int properPrice = getProperPrice(hotel.getId(), lowPrice, highPrice);
+				int properPrice = getProperPrice(info.getHotel().getId(), lowPrice, highPrice);
 				if (properPrice == -1)
 					continue;
-				hotel.setLowPrice(properPrice);
+				info.getHotel().setLowPrice(properPrice);
 			}
 			else
-				hotel.setLowPrice(getLowestPrice(hotel.getId()));
-			
-			HotelInfo info = getHotelInfoByHotelId(hotel.getId());
-			hotel.setInfo(info);
-			res.add(hotel);
+				info.getHotel().setLowPrice(getLowestPrice(info.getHotel().getId()));
+			info.getHotel().setInfo(info);
+			res.add(info.getHotel());
 		}
 		return res;
 	}
 	
 	private HotelInfo getHotelInfoByHotelId(int hotelId)
 	{
-		HotelInfo info = (HotelInfo) loadObject("from HotelInfo where hotelId = " + hotelId);
+		HotelInfo info = (HotelInfo) loadObject("from HotelInfo where hotel.id = " + hotelId);
 		if (info == null)
 			info = new HotelInfo("none", "none", "none");
 		return info;

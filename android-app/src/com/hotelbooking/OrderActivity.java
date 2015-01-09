@@ -78,7 +78,7 @@ public class OrderActivity extends Activity {
 		this.orders.addAll(orders);
 		if (adapter == null)
 		{
-			adapter = new OrderListAdapter(this, orders);
+			adapter = new OrderListAdapter(this, this.orders);
 			listView.setAdapter(adapter);
 		}
 		adapter.notifyDataSetChanged();

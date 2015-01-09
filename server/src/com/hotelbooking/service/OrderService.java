@@ -27,7 +27,6 @@ public class OrderService {
 	{
 		String orderSource = "安卓手机应用";
 		Date nowDate = new Date(System.currentTimeMillis());
-		String orderNumber = DateFormater.format1(nowDate);
 		int stateCode = 2;
 		
 		
@@ -41,7 +40,7 @@ public class OrderService {
 		
 		Date orderDate = nowDate;
 		UserDAO userDAO = new UserDAO();
-		OriginOrder originOrder = new OriginOrder(houseId, orderSource, orderNumber,
+		OriginOrder originOrder = new OriginOrder(houseId, orderSource, tradeNo,
 				stateCode, houseNum, payMoney, orderDate, checkInDate, checkOutDate,
 				name, requestMessage);
 		OrderDAO orderDAO = new OrderDAO();

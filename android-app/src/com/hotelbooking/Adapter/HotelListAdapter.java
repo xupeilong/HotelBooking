@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class HotelListAdapter extends BaseAdapter{
@@ -48,6 +49,7 @@ public class HotelListAdapter extends BaseAdapter{
 		public TextView levelTextView;
 		public TextView areaTextView;
 		public TextView distanceTextView;
+		public LinearLayout distanceLL;
 		public ImageView imageView;
 	}
 	
@@ -65,6 +67,7 @@ public class HotelListAdapter extends BaseAdapter{
 			holder.levelTextView = (TextView) convertView.findViewById(R.id.text_hotel_level);
 			holder.areaTextView = (TextView) convertView.findViewById(R.id.text_hotel_area);
 			holder.distanceTextView = (TextView) convertView.findViewById(R.id.text_hotel_distance);
+			holder.distanceLL = (LinearLayout) convertView.findViewById(R.id.ll_hotel_distance);
 			holder.imageView = (ImageView) convertView.findViewById(R.id.image_room_icon);
 			convertView.setTag(holder);
 		}
@@ -77,7 +80,10 @@ public class HotelListAdapter extends BaseAdapter{
 		holder.priceTextView.setText(String.valueOf(hotel.getPrice()));
 		holder.levelTextView .setText(hotel.getLevel());
 		holder.areaTextView.setText(hotel.getArea());
-		holder.distanceTextView.setText(String.valueOf(hotel.getDistance()));
+		if (hotel.getDistance() > 0)
+			holder.distanceTextView.setText(String.valueOf(hotel.getDistance()));
+		else
+			holder.distanceLL.setVisibility(View.INVISIBLE);
 		holder.imageView.setImageResource(R.drawable.bg_transparent);
 		String imagePath = hotel.getImage_path();
 		if (!imagePath.equals("none"))

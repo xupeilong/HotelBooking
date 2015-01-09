@@ -40,7 +40,7 @@ public class RefundService extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		int orderId = Integer.parseInt(request.getParameter("order_id"));
-		String callback = request.getParameter("callback");
+//		String callback = request.getParameter("callback");
 		OrderDAO orderDAO = new OrderDAO();
 		UserOrder userOrder = orderDAO.getUserOdrByOriginOrdId(orderId);
 		String batch_no = getTodayNewBatchNoString(userOrder.getAli_pay_trade_no() + "^" + userOrder.getTotal_fee() + "^" + "refund");
@@ -50,7 +50,7 @@ public class RefundService extends HttpServlet {
 				+ "&batch_no=" + batch_no
 				+ "&batch_num=" + "1"
 				+ "&detail_data=" + userOrder.getAli_pay_trade_no() + "^" + userOrder.getTotal_fee() + "^" + "refund"
-				+ "&notify_url=" + callback
+				+ "&notify_url=" + Const.REFUND_NOTIFY_URL
 				+ "&partner=" + Const.DEFAULT_PARTNER
 				+ "&refund_date=" + refund_date
 				+ "&seller_user_id=" + Const.DEFAULT_PARTNER
@@ -60,7 +60,7 @@ public class RefundService extends HttpServlet {
 				+ "&batch_no=" + batch_no
 				+ "&batch_num=" + "1"
 				+ "&detail_data=" + userOrder.getAli_pay_trade_no() + "^" + userOrder.getTotal_fee() + "^" + "refund"
-				+ "&notify_url=" + URLEncoder.encode(callback)
+				+ "&notify_url=" + URLEncoder.encode(Const.REFUND_NOTIFY_URL)
 				+ "&partner=" + Const.DEFAULT_PARTNER
 				+ "&refund_date=" + refund_date
 				+ "&seller_user_id=" + Const.DEFAULT_PARTNER

@@ -75,17 +75,17 @@ public class AliRefundNotity extends HttpServlet {
 			// TODO: handle exception
 		}
 		try {
-			batch_no = request.getParameter("sign");
+			batch_no = request.getParameter("batch_no");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		try {
-			success_num = request.getParameter("sign");
+			success_num = request.getParameter("success_num");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 		try {
-			result_details = request.getParameter("result_details ");
+			result_details = request.getParameter("result_details");
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
@@ -110,11 +110,15 @@ public class AliRefundNotity extends HttpServlet {
 			baseDAO.save(new AliRefundNotifyLog(batch_no, now, success_num, result_details));
 			
 			String orderNo = result_details.split("\\^")[0];
-			OrderDAO orderDAO = new OrderDAO();
-			UserOrder userOrder = orderDAO.getUserOdrByPayNo(orderNo);
-			OriginOrder originOrder = userOrder.getOriginOrder();
-			originOrder.setStateCode(3);	// cancel
-			baseDAO.save(originOrder);
+			String resultStatus = result_details.split("\\^")[2];
+			if (resultStatus.endsWith("SUCCESS"))
+			{
+				OrderDAO orderDAO = new OrderDAO();
+				UserOrder userOrder = orderDAO.getUserOdrByPayNo(orderNo);
+				OriginOrder originOrder = userOrder.getOriginOrder();
+				originOrder.setStateCode(3);	// cancel
+				baseDAO.update(originOrder);
+			}
 			
 			response.setContentType("text/plain");
 			response.setCharacterEncoding("UTF-8");

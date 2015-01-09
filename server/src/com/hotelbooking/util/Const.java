@@ -8,6 +8,8 @@ public class Const {
 	public static final String DEFAULT_PARTNER = "2088411857583121";
 	public static final String DEFAULT_SELLER = "1586928607@qq.com";
 	
+	public static final String REFUND_NOTIFY_URL = "http://118.123.16.137:8080/HotelBooking/AliRefundNotity";
+	
 	public static final String PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMn4t2z0D4XKNVoZ"
 			+ "cAj6PVg0eazZmzu8qtmyaziiqVB5x3dus+Q5MBPh62JbX8zNV05/fnWHanOps1Bv"
 			+ "u3kO5YNEXLqqufxp82z0WjKmVQaKwLZyJ0W1RHCg8luD1CxMNMVug5d9L1xE5zwg"

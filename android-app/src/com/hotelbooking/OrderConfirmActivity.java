@@ -88,24 +88,30 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 				Result resultObj = new Result((String) msg.obj);
 				String resultStatus = resultObj.resultStatus;
 
-				Toast.makeText(OrderConfirmActivity.this, (String)msg.obj,
-						Toast.LENGTH_SHORT).show();
+//				Toast.makeText(OrderConfirmActivity.this, (String)msg.obj,
+//						Toast.LENGTH_SHORT).show();
 				// 判断resultStatus 为“9000”则代表支付成功，具体状态码代表含义可参考接口文档
 				if (TextUtils.equals(resultStatus, "9000")) {
 					Toast.makeText(OrderConfirmActivity.this, "支付成功",
 							Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent();
+					intent.setClass(OrderConfirmActivity.this, OrderActivity.class);
+					startActivity(intent);
+					finish();
 				} else {
 					// 判断resultStatus 为非“9000”则代表可能支付失败
 					// “8000” 代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
-					if (TextUtils.equals(resultStatus, "8000")) {
-						Toast.makeText(OrderConfirmActivity.this, "支付结果确认中",
-								Toast.LENGTH_SHORT).show();
-
-					} else {
-						Toast.makeText(OrderConfirmActivity.this, "支付失败",
-								Toast.LENGTH_SHORT).show();
-
-					}
+//					if (TextUtils.equals(resultStatus, "8000")) {
+//						Toast.makeText(OrderConfirmActivity.this, "支付结果确认中",
+//								Toast.LENGTH_SHORT).show();
+//
+//					} else {
+//						Toast.makeText(OrderConfirmActivity.this, "支付失败",
+//								Toast.LENGTH_SHORT).show();
+//
+//					}
+					Toast.makeText(OrderConfirmActivity.this, "支付失败,请检查网络",
+							Toast.LENGTH_SHORT).show();
 				}
 				break;
 			}
@@ -140,7 +146,7 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 		hotel = (Hotel) intent.getSerializableExtra("hotel");
 		house = (House) intent.getSerializableExtra("house");
 		
-		payType = 0;
+		payType = -1;
 		today = Calendar.getInstance();
 		today.set(today.get(Calendar.YEAR),
 				today.get(Calendar.MONTH), 
@@ -214,7 +220,11 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 			
 			@Override
 			public void onClick(View arg0) {
-				if (payType == 0)
+				if (payType == -1)
+				{
+					Toast.makeText(OrderConfirmActivity.this, "请选择付款方式", Toast.LENGTH_LONG).show();
+				}
+				else if (payType == 0)
 				{
 					
 				}
@@ -309,9 +319,10 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 					
 					@Override
 					public void onClick(View v) {
-						tvPayType.setText(Const.payTypeStringList[0]);
-						payType = 0;
-						dlgSelectPayType.dismiss();
+//						tvPayType.setText(Const.payTypeStringList[0]);
+//						payType = 0;
+//						dlgSelectPayType.dismiss();
+						Toast.makeText(OrderConfirmActivity.this, "抱歉，暂不支持该支付方式", Toast.LENGTH_LONG).show();
 					}
 				});
 				type2.setOnClickListener(new OnClickListener() {

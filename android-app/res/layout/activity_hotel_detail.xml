@@ -62,7 +62,8 @@
       	     </LinearLayout>
       	</RelativeLayout>
 
-        <LinearLayout style="@style/card" >
+        <LinearLayout style="@style/card" 
+            android:visibility="gone">
 
             <LinearLayout style="@style/card_item" >
 

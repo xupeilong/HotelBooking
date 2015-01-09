@@ -52,7 +52,7 @@ public class OrderDAO extends BaseDAO{
 	public List<UserOrder> getOrderListByUserId(int userId, int pageNum, int pageSize)
 	{
 		
-		List<UserOrder> orders = query(pageNum, pageSize, "from UserOrder where userId = ?", userId);
+		List<UserOrder> orders = query(pageNum, pageSize, "from UserOrder where userId = ? order by ali_pay_trade_no desc", userId);
 		for (UserOrder userOrder: orders)
 		{
 			OriginOrder originOrder = (OriginOrder) getById(OriginOrder.class, userOrder.getOriginOrderId());
