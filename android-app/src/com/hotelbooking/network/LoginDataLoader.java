@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.hotelbooking.HotelListActivity;
 import com.hotelbooking.LoginActivity;
+import com.hotelbooking.SplashActivity;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.User;
 import com.hotelbooking.network.utils.HttpDataHandler;
@@ -29,9 +30,14 @@ public class LoginDataLoader implements HttpDataHandler{
 
 	private LoginActivity loginActivity;
 	private HttpDataLoader httpDataLoader;
+	private SplashActivity splashActivity;
 	
 	public LoginDataLoader(LoginActivity loginActivity) {
 		this.loginActivity = loginActivity;
+	}
+	
+	public LoginDataLoader(SplashActivity splashActivity) {
+		this.splashActivity = splashActivity;
 	}
 	
 	public void startLogin(String account, String password)
@@ -50,6 +56,25 @@ public class LoginDataLoader implements HttpDataHandler{
 		parameters.add(new Parameter("account", account));
 		parameters.add(new Parameter("password", sha1Password));
 		httpDataLoader = new HttpDataLoader(Const.LoginURL, parameters, this, 0);
+		httpDataLoader.start();
+	}
+	
+	public void startPreLogin(String account, String password)
+	{
+		String sha1Password = "";
+		try {
+			sha1Password = SHA1Coder.SHA1(password);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		List<Parameter> parameters = new ArrayList<Parameter>();
+		parameters.add(new Parameter("account", account));
+		parameters.add(new Parameter("password", sha1Password));
+		httpDataLoader = new HttpDataLoader(Const.LoginURL, parameters, this, 1);
 		httpDataLoader.start();
 	}
 	
@@ -79,6 +104,9 @@ public class LoginDataLoader implements HttpDataHandler{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		loginActivity.onLoginFinished(resultCode, user);
+		if (requestCode == 0)
+			loginActivity.onLoginFinished(resultCode, user);
+		else if (requestCode == 1)
+			splashActivity.onLoginFinished(resultCode, user);
 	}
 }

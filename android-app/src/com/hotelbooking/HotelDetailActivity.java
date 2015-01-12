@@ -12,7 +12,9 @@ import com.hotelbooking.network.HotelInfoDataLoader;
 import com.hotelbooking.network.utils.PictureLoader;
 import com.hotelbooking.utils.Const;
 import com.hotelbooking.utils.DateFormater;
+import com.hotelbooking.utils.ExitAppliation;
 import com.hotelbooking.utils.OrderHelper;
+import com.hotelbooking.utils.PreferenceHelper;
 import com.hotelbooking.utils.Result;
 
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -73,6 +76,7 @@ public class HotelDetailActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hotel_detail);
+		ExitAppliation.getInstance().addActivity(this);
 		
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
@@ -209,6 +213,23 @@ public class HotelDetailActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.hotel_info, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			PreferenceHelper helper = new PreferenceHelper(HotelDetailActivity.this);
+			helper.resetAccountInfo();
+			Intent intent = new Intent();
+			intent.setClass(HotelDetailActivity.this, LoginActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 }

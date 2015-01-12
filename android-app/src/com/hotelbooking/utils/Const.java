@@ -20,6 +20,8 @@ public class Const {
 	public static final String RegisterURL = BASE_URL + "/Register";
 	public static final String GetOrderListURL = BASE_URL + "/GetOrderList";
 	public static final String GetCityListURL = BASE_URL + "/GetCityList";
+	public static final String CheckCodeURL = BASE_URL + "/CheckCode";
+	
 	
 	
 	
@@ -31,9 +33,9 @@ public class Const {
 	// for test
 //	public static final String AliPayNofityURL= "http://10.33.7.111:8080/HotelBooking/AliPayNotify";
 	
-//	public static User currentUser = null;
+	public static User currentUser = null;
 	// for test
-	public static User currentUser = new User(1, "TEST");
+//	public static User currentUser = new User(1, "TEST");
 	
 	
 	

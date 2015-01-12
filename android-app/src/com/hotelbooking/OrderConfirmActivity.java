@@ -6,9 +6,12 @@ import java.util.Date;
 import com.hotelbooking.handler.DatePickerHandler;
 import com.hotelbooking.model.Hotel;
 import com.hotelbooking.model.House;
+import com.hotelbooking.network.OrderConfirmDataLoader;
 import com.hotelbooking.utils.Const;
 import com.hotelbooking.utils.DateFormater;
+import com.hotelbooking.utils.ExitAppliation;
 import com.hotelbooking.utils.OrderHelper;
+import com.hotelbooking.utils.PreferenceHelper;
 import com.hotelbooking.utils.Result;
 
 import android.os.Bundle;
@@ -21,12 +24,14 @@ import android.app.Dialog;
 import android.app.ActionBar.LayoutParams;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnCancelListener;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -49,6 +54,7 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 	private TextView tvMessage;
 	private ImageView imgDelButton;
 	private TextView tvPayType;
+	private EditText etCode;
 	private TextView tvConfirmButton;
 	
 	private View vCheckin;
@@ -59,6 +65,7 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 	private ImageView imgNightMinus;
 	private ImageView imgNightPlus;
 	
+	private AlertDialog dlgLoading;
 	private AlertDialog dlgSelectCount;
 	private AlertDialog dlgSelectMessage;
 	private AlertDialog dlgSelectPayType;
@@ -70,6 +77,8 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 	private int count;
 	private String name;
 	private String message;
+	private String code;
+	private double cutFee;
 	
 	private Hotel hotel;
 	private House house;
@@ -125,11 +134,27 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 			}
 		};
 	};
+	
+	public void onCodeCheckOver(boolean res, double cutFee)
+	{
+		dlgLoading.dismiss();
+		if (res)
+		{
+			Toast.makeText(this, "优惠码验证成功，您获得了" + (int)cutFee + "元房费折扣", Toast.LENGTH_LONG).show();
+			this.cutFee = cutFee;
+			order(code);
+		}
+		else
+		{
+			Toast.makeText(this, "您的优惠码有误，请重新输入或留空", Toast.LENGTH_LONG).show();
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order_confirm);
+		ExitAppliation.getInstance().addActivity(this);
 		
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
@@ -154,6 +179,18 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 		checkinDate = (Calendar) intent.getSerializableExtra("checkin_date");
 		nights = intent.getIntExtra("nights", 1);
 		count = 1;
+		code = "";
+		
+		LayoutInflater inflater = LayoutInflater.from(this);
+		View loadingView = inflater.inflate(R.layout.dialog_loading, null, false);
+		dlgLoading = new AlertDialog.Builder(this).setView(loadingView).create();
+		dlgLoading.setOnCancelListener(new OnCancelListener() {
+			
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				finish();
+			}
+		});
 		
 		initViews();
 		initListeners();
@@ -170,6 +207,7 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 		tvMessage = (TextView) findViewById(R.id.edit_message);
 		imgDelButton = (ImageView) findViewById(R.id.image_del_button);
 		tvPayType = (TextView) findViewById(R.id.text_pay_type);
+		etCode = (EditText) findViewById(R.id.text_code);
 		vCheckin = findViewById(R.id.view_checkin_date);
 		tvCheckin = (TextView) findViewById(R.id.text_checkin_date);
 		tvCheckinDetail = (TextView) findViewById(R.id.text_checkin_date_detail);
@@ -184,6 +222,39 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 		tvHouseName.setText(house.getName());
 	}
 
+	private boolean checkInput()
+	{
+		name = etCutstomer.getText().toString();
+		if (name.length() <= 0)
+		{
+			Toast.makeText(this, "请填写入住人姓名", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		
+		if (payType == -1)
+		{
+			Toast.makeText(OrderConfirmActivity.this, "请选择付款方式", Toast.LENGTH_LONG).show();
+			return false;
+		}
+		return true;
+	}
+	
+	private void order(String code)
+	{
+		
+		if (payType == 0)
+		{
+			
+		}
+		else if (payType == 1)
+		{
+			
+			message = tvMessage.getText().toString();
+			OrderHelper.order(OrderConfirmActivity.this, mHandler, name, message, hotel, house, count,
+					checkinDate.getTime(), getCheckoutDate().getTime(), code, cutFee);
+		}
+	}
+	
 	private void initListeners()
 	{
 		
@@ -220,21 +291,17 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 			
 			@Override
 			public void onClick(View arg0) {
-				if (payType == -1)
+				if (!checkInput())
+					return;
+				code = etCode.getText().toString();
+				if (code.length() > 0)
 				{
-					Toast.makeText(OrderConfirmActivity.this, "请选择付款方式", Toast.LENGTH_LONG).show();
+					dlgLoading.show();
+					OrderConfirmDataLoader orderConfirmDataLoader = new OrderConfirmDataLoader(OrderConfirmActivity.this);
+					orderConfirmDataLoader.startCheckingCOde(code);
 				}
-				else if (payType == 0)
-				{
-					
-				}
-				else if (payType == 1)
-				{
-					name = Const.currentUser.getName();
-					message = tvMessage.getText().toString();
-					OrderHelper.order(OrderConfirmActivity.this, mHandler, name, message, hotel, house, count,
-							checkinDate.getTime(), getCheckoutDate().getTime());
-				}
+				else
+					order(null);
 			}
 		});
 		
@@ -347,6 +414,23 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.order_confirm, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			PreferenceHelper helper = new PreferenceHelper(OrderConfirmActivity.this);
+			helper.resetAccountInfo();
+			Intent intent = new Intent();
+			intent.setClass(OrderConfirmActivity.this, LoginActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	private void resetPrice()

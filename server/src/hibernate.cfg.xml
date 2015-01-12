@@ -52,6 +52,7 @@
 		<mapping class="com.hotelbooking.model.AliPayLog"/>
 		<mapping class="com.hotelbooking.model.AliRefundLog"/>
 		<mapping class="com.hotelbooking.model.AliRefundNotifyLog"/>
+		<mapping class="com.hotelbooking.model.Code"/>
           
     </session-factory>
 </hibernate-configuration>

@@ -37,11 +37,11 @@ public class OrderHelper {
 	
 	public static void order(final Activity activity, final Handler handler,
 			String name, String message, Hotel hotel, House house,
-			int count, Date checkinDate, Date checkoutDate)
+			int count, Date checkinDate, Date checkoutDate, String code, double cutFee)
 	{
 		try {
 			Log.i("ExternalPartner", "onItemClick");
-			String info = getNewOrderInfo(name, message, hotel, house, count, checkinDate, checkoutDate);
+			String info = getNewOrderInfo(name, message, hotel, house, count, checkinDate, checkoutDate, code, cutFee);
 			String sign = SignUtils.sign(info, Keys.PRIVATE);
 			sign = URLEncoder.encode(sign, "UTF-8");
 
@@ -74,7 +74,9 @@ public class OrderHelper {
 	}
 	
 	
-	private static String getNewOrderInfo(String name, String message, Hotel hotel, House house, int count, Date checkinDate, Date checkoutDate) {
+	private static String getNewOrderInfo(String name, String message, Hotel hotel,
+			House house, int count, Date checkinDate, Date checkoutDate,
+			String code, double cutFee) {
 		
 		// 合作者身份ID
 		String orderInfo = "partner=" + "\"" + Keys.DEFAULT_PARTNER + "\"";
@@ -89,10 +91,10 @@ public class OrderHelper {
 		orderInfo += "&subject=" + "\"" + getSubjectString(hotel, house, count, checkinDate, checkoutDate) + "\"";
 
 		// 商品详情
-		orderInfo += "&body=" + "\"" + getBodyString(name, message, hotel, house, count, checkinDate, checkoutDate) + "\"";
+		orderInfo += "&body=" + "\"" + getBodyString(name, message, hotel, house, count, checkinDate, checkoutDate, code) + "\"";
 
 		// 商品金额
-		orderInfo += "&total_fee=" + "\"" + getTotalFee(house, count, checkinDate, checkoutDate) + "\"";
+		orderInfo += "&total_fee=" + "\"" + getTotalFee(house, count, checkinDate, checkoutDate, code, cutFee) + "\"";
 
 		// 服务器异步通知页面路径
 		orderInfo += "&notify_url=" + "\"" + Const.AliPayNofityURL
@@ -167,7 +169,7 @@ public class OrderHelper {
 	}
 	
 	private static String getBodyString(String name, String message, Hotel hotel, House house, int count,
-			Date checkinDate, Date checkoutDate)
+			Date checkinDate, Date checkoutDate, String code)
 	{
 		JSONObject obj = new JSONObject();
 		try {
@@ -178,6 +180,8 @@ public class OrderHelper {
 			obj.put("checkin_date", DateFormater.format2(checkinDate));
 			obj.put("checkout_date", DateFormater.format2(checkoutDate));
 			obj.put("request_massage", message);
+			if (code != null)
+				obj.put("code", code);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -185,12 +189,26 @@ public class OrderHelper {
 		return obj.toString();
 	}
 	
-	private static String getTotalFee(House house, int count, Date checkinDate, Date checkoutDate)
+	private static String getTotalFee(House house, int count, Date checkinDate, Date checkoutDate, String code, double cutFee)
 	{
 		DecimalFormat df = new DecimalFormat("0.00");
-//		double fee = house.getPrice() * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
+		double fee = house.getPrice() * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
+		if (code != null)
+		{
+			fee = fee - cutFee;
+			if (fee <= 0)
+				fee = 0.01;
+		}
+		
 		// for test
-		double fee = 0.01 * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
+//		double fee = 0.01 * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
+//		if (code != null)
+//		{
+//			fee = fee - 0.01;
+//			if (fee <= 0)
+//				fee = 0.01;
+//		}
+		
 		return df.format(fee);
 		
 	}

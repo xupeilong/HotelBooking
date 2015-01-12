@@ -2,6 +2,7 @@ package com.hotelbooking;
 
 import com.hotelbooking.model.User;
 import com.hotelbooking.network.RegisterDataLoader;
+import com.hotelbooking.utils.ExitAppliation;
 import com.hotelbooking.utils.InputChecker;
 
 import android.os.Bundle;
@@ -87,6 +88,7 @@ public class RegisterActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
+		ExitAppliation.getInstance().addActivity(this);
 		
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
@@ -127,13 +129,6 @@ public class RegisterActivity extends Activity {
 			prompt("Êý¾Ý¿â´íÎó");
 		}
 		
-	}
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.register, menu);
-		return true;
 	}
 
 	private void prompt(String message)

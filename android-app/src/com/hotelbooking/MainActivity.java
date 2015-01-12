@@ -15,6 +15,8 @@ import com.hotelbooking.model.City;
 import com.hotelbooking.network.SearchDataLoader;
 import com.hotelbooking.utils.Const;
 import com.hotelbooking.utils.DateFormater;
+import com.hotelbooking.utils.ExitAppliation;
+import com.hotelbooking.utils.PreferenceHelper;
 import com.hotelbooking.utils.UserChecker;
 
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.CalendarView;
@@ -79,6 +82,7 @@ public class MainActivity extends Activity implements DatePickerHandler{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		ExitAppliation.getInstance().addActivity(this);
 		
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
@@ -359,9 +363,40 @@ public class MainActivity extends Activity implements DatePickerHandler{
 		return true;
 	}
 	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			PreferenceHelper helper = new PreferenceHelper(MainActivity.this);
+			helper.resetAccountInfo();
+			Intent intent = new Intent();
+			intent.setClass(MainActivity.this, LoginActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
 	private void prompt(String message)
 	{
 		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+	}
+	
+	private long exitTime = 0;
+	@Override
+	public void onBackPressed() {
+		long curTime = System.currentTimeMillis();
+		if(curTime - exitTime > 2000){
+			Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+			exitTime = curTime;
+		}
+		else{
+			super.onBackPressed();
+			ExitAppliation.getInstance().exit();
+		}
 	}
 
 	@Override

@@ -22,6 +22,8 @@ import com.baidu.mapapi.search.poi.PoiDetailResult;
 import com.baidu.mapapi.search.poi.PoiResult;
 import com.baidu.mapapi.search.poi.PoiSearch;
 import com.hotelbooking.model.Hotel;
+import com.hotelbooking.utils.ExitAppliation;
+import com.hotelbooking.utils.PreferenceHelper;
 
 import android.os.Bundle;
 import android.app.ActionBar;
@@ -33,6 +35,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -90,6 +93,7 @@ public class MapActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		SDKInitializer.initialize(getApplicationContext());  
 		setContentView(R.layout.activity_map);
+		ExitAppliation.getInstance().addActivity(this);
 		
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
@@ -209,6 +213,23 @@ public class MapActivity extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.map, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.action_settings:
+			PreferenceHelper helper = new PreferenceHelper(MapActivity.this);
+			helper.resetAccountInfo();
+			Intent intent = new Intent();
+			intent.setClass(MapActivity.this, LoginActivity.class);
+			startActivity(intent);
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 	
 	@Override  

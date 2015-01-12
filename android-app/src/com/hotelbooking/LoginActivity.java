@@ -3,7 +3,9 @@ package com.hotelbooking;
 import com.hotelbooking.model.User;
 import com.hotelbooking.network.LoginDataLoader;
 import com.hotelbooking.utils.Const;
+import com.hotelbooking.utils.ExitAppliation;
 import com.hotelbooking.utils.InputChecker;
+import com.hotelbooking.utils.PreferenceHelper;
 
 import android.location.Location;
 import android.location.LocationManager;
@@ -14,6 +16,7 @@ import android.app.ProgressDialog;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,8 +25,11 @@ import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +40,12 @@ public class LoginActivity extends Activity {
 	private EditText etPassword;
 	private Button btnLogin;
 	private TextView tvRegister;
+	private CheckBox cbAutoLogin;
+	private LinearLayout llAutoLogin;
 	
+	String account;
+	String password;
+	boolean isAutoTemp;
 	ActionBar actionBar;
 	View actionBarView;
 	private ImageView imgBackButton;
@@ -45,6 +56,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		ExitAppliation.getInstance().addActivity(this);
 		
 		ActionBar.LayoutParams layoutParams = new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
@@ -56,6 +68,7 @@ public class LoginActivity extends Activity {
 		actionBar.setDisplayShowCustomEnabled(true);
 		actionBar.setDisplayShowHomeEnabled(false);
 		actionBar.setDisplayShowTitleEnabled(false);
+		isAutoTemp = false;
 		
 		try {
 			nextPageClass = (Class) getIntent().getExtras().get("next_activity_class");	
@@ -74,10 +87,27 @@ public class LoginActivity extends Activity {
 		btnLogin = (Button) findViewById(R.id.button_login);
 		tvRegister = (TextView) actionBarView.findViewById(R.id.text_register_action_bar);
 		imgBackButton = (ImageView) actionBarView.findViewById(R.id.button_back);
+		cbAutoLogin = (CheckBox) findViewById(R.id.cb_auto_login);
+		llAutoLogin = (LinearLayout) findViewById(R.id.ll_auto_login);
 	}
 	
 	public void initListeners()
 	{
+		llAutoLogin.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				cbAutoLogin.toggle();
+			}
+		});
+		cbAutoLogin.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
+				isAutoTemp = arg1;
+			}
+		});
+		
 		imgBackButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -90,8 +120,8 @@ public class LoginActivity extends Activity {
 			
 			@Override
 			public void onClick(View arg0) {
-				String account = tvAccount.getText().toString();
-				String password = etPassword.getText().toString();
+				account = tvAccount.getText().toString();
+				password = etPassword.getText().toString();
 				InputChecker checker = new InputChecker(LoginActivity.this);
 				if (checker.checkAccount(account) && checker.checkPassword(password))
 				{
@@ -116,6 +146,18 @@ public class LoginActivity extends Activity {
 	{
 		if (resultCode == 0)
 		{
+			PreferenceHelper helper = new PreferenceHelper(this);
+			helper.saveAutoLoginStatus(isAutoTemp);
+			if (isAutoTemp)
+			{
+				Log.d("dataa", "save: " + account);
+				if (account != null)
+				{
+					helper.saveAccount(account);
+					helper.savePassword(password);
+				}
+			}
+			
 			Const.currentUser = user;
 			Intent intent = new Intent();
 			if (nextPageClass != null)
@@ -134,13 +176,18 @@ public class LoginActivity extends Activity {
 		}
 	}
 	
-	
-
+	private long exitTime = 0;
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.login, menu);
-		return true;
+	public void onBackPressed() {
+		long curTime = System.currentTimeMillis();
+		if(curTime - exitTime > 2000){
+			Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+			exitTime = curTime;
+		}
+		else{
+			super.onBackPressed();
+			ExitAppliation.getInstance().exit();
+		}
 	}
 	
 	private void prompt(String message)

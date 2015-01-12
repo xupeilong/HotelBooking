@@ -41,6 +41,7 @@
                 android:imeOptions="actionNext"
                 android:padding="2dp"
                 android:textColor="@android:color/black"
+                android:singleLine="true"
                 android:textSize="16sp" />
 
             <ImageView
@@ -84,8 +85,9 @@
                 android:hint="请输入密码"
                 android:imeOptions="actionGo"
                 android:inputType="textPassword"
-                android:textColor="@android:color/black"
                 android:padding="2dp"
+                android:textColor="@android:color/black"
+                android:singleLine="true"
                 android:textSize="16sp" />
 
             <ImageView
@@ -96,13 +98,32 @@
                 android:src="@drawable/actionbar_deletetext_icon"
                 android:visibility="gone" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_auto_login"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="right" 
+            android:padding="3dp">
+
+            <CheckBox
+                android:id="@+id/cb_auto_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            
+           <TextView 
+               android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下回自动登录"
+               />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:layout_weight="1"
+        android:layout_weight="10"
         android:orientation="vertical" >
 
         <Button
@@ -114,9 +135,8 @@
             android:background="@drawable/button_large_bg"
             android:gravity="center"
             android:text="登录"
-            android:textColor="@color/button_unable_gray"
+            android:textColor="#ffffff"
             android:textSize="16sp" />
     </LinearLayout>
-
 
 </LinearLayout>

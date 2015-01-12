@@ -23,7 +23,8 @@ import com.hotelbooking.util.DateFormater;
 public class OrderService {
 
 	public static Result placeOrder(int userId, String name, int houseId, int houseNum,
-			Date checkInDate, Date checkOutDate, String requestMessage, String tradeNo, double totalFee)
+			Date checkInDate, Date checkOutDate, String requestMessage, String code,
+			String tradeNo, String outTradeNo, double totalFee)
 	{
 		String orderSource = "安卓手机应用";
 		Date nowDate = new Date(System.currentTimeMillis());
@@ -40,7 +41,7 @@ public class OrderService {
 		
 		Date orderDate = nowDate;
 		UserDAO userDAO = new UserDAO();
-		OriginOrder originOrder = new OriginOrder(houseId, orderSource, tradeNo,
+		OriginOrder originOrder = new OriginOrder(houseId, orderSource, outTradeNo,
 				stateCode, houseNum, payMoney, orderDate, checkInDate, checkOutDate,
 				name, requestMessage);
 		OrderDAO orderDAO = new OrderDAO();
@@ -52,7 +53,8 @@ public class OrderService {
 					name, checkInDate, checkOutDate, orderSource);
 			orderDAO.saveProcess(originProcess);
 			orderDAO.saveOriginOrderSearch(originOrderSearch);
-			
+			if (code != null)
+				CodeService.useCode(code);
 			Result result = new Result(0, "下单成功");
 			return result;
 		}

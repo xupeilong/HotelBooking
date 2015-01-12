@@ -34,6 +34,12 @@ public class AliPayService {
 			System.out.println("***fee " + totalFee);
 			JSONTokener tokener = new JSONTokener(body);
 			JSONObject obj = (JSONObject) tokener.nextValue();
+			String code = null;
+			try {
+				code = obj.getString("code");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
 			Result result = OrderService.placeOrder(obj.getInt("user_id"),
 					obj.getString("name"),
 					obj.getInt("house_id"),
@@ -41,7 +47,9 @@ public class AliPayService {
 					DateFormater.toDate(obj.getString("checkin_date")),
 					DateFormater.toDate(obj.getString("checkout_date")),
 							obj.getString("request_massage"),
+							code,
 							tradeNo,
+							outTradeNo,
 							totalFee);
 		}
 	}
