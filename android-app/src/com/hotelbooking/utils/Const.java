@@ -23,12 +23,12 @@ public class Const {
 	public static final String CheckCodeURL = BASE_URL + "/CheckCode";
 	
 	
-	
-	
 	public static final String PICTURE_DIR = "hotelbooking" + File.separator;
 	
-	
-	public static final String AliPayNofityURL= "http://118.123.16.137:8080/HotelBooking" + "/AliPayNotify";
+
+	public static final String AliPayNofityURL= BASE_URL + "/AliPayNotify";
+	public static final String AliPayWapURL = BASE_URL + "/Alipay/alipayapi.jsp";
+	public static final String AliPaySellerAccount = "1586928607@qq.com";
 	
 	// for test
 //	public static final String AliPayNofityURL= "http://10.33.7.111:8080/HotelBooking/AliPayNotify";

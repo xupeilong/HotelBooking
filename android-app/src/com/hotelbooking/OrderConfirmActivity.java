@@ -69,6 +69,7 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 	private AlertDialog dlgSelectCount;
 	private AlertDialog dlgSelectMessage;
 	private AlertDialog dlgSelectPayType;
+	private AlertDialog dlgIsPayFinished;
 	
 	private int payType;
 	private Calendar today;
@@ -79,6 +80,7 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 	private String message;
 	private String code;
 	private double cutFee;
+	private String newTradeNo;
 	
 	private Hotel hotel;
 	private House house;
@@ -241,16 +243,35 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 	
 	private void order(String code)
 	{
-		
+		message = tvMessage.getText().toString();
 		if (payType == 0)
 		{
-			
+			newTradeNo = OrderHelper.orderByAliWap(OrderConfirmActivity.this, name, message, hotel, house, count,
+					checkinDate.getTime(), getCheckoutDate().getTime(), code, cutFee);
+			dlgIsPayFinished = new AlertDialog.Builder(OrderConfirmActivity.this)
+			.setTitle("网页支付")
+			.setMessage("您是否完成了支付")
+			.setPositiveButton("已完成", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					// TODO Auto-generated method stub
+					
+				}
+			})
+			.setNegativeButton("没有", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface arg0, int arg1) {
+					dlgIsPayFinished.dismiss();
+				}
+			})
+			.create();
+			dlgIsPayFinished.show();
 		}
 		else if (payType == 1)
 		{
-			
-			message = tvMessage.getText().toString();
-			OrderHelper.order(OrderConfirmActivity.this, mHandler, name, message, hotel, house, count,
+			OrderHelper.orderByAliSecure(OrderConfirmActivity.this, mHandler, name, message, hotel, house, count,
 					checkinDate.getTime(), getCheckoutDate().getTime(), code, cutFee);
 		}
 	}
@@ -386,10 +407,10 @@ public class OrderConfirmActivity extends Activity implements DatePickerHandler{
 					
 					@Override
 					public void onClick(View v) {
-//						tvPayType.setText(Const.payTypeStringList[0]);
-//						payType = 0;
-//						dlgSelectPayType.dismiss();
-						Toast.makeText(OrderConfirmActivity.this, "抱歉，暂不支持该支付方式", Toast.LENGTH_LONG).show();
+						tvPayType.setText(Const.payTypeStringList[0]);
+						payType = 0;
+						dlgSelectPayType.dismiss();
+//						Toast.makeText(OrderConfirmActivity.this, "抱歉，暂不支持该支付方式", Toast.LENGTH_LONG).show();
 					}
 				});
 				type2.setOnClickListener(new OnClickListener() {

@@ -8,7 +8,11 @@ public class Const {
 	public static final String DEFAULT_PARTNER = "2088411857583121";
 	public static final String DEFAULT_SELLER = "1586928607@qq.com";
 	
-	public static final String REFUND_NOTIFY_URL = "http://118.123.16.137:8080/HotelBooking/AliRefundNotity";
+	private static final String BASE_URL = "http://118.123.16.137:8080/HotelBooking";
+	public static final String REFUND_NOTIFY_URL = BASE_URL + "/AliRefundNotity";
+	public static final String ALIPAY_WAP_CALLBACK_URL = BASE_URL + "/Alipay/call_back_url.jsp";
+	public static final String ALIPAY_WAP_NOTIFY_URL = BASE_URL + "/Alipay/notify_url.jsp";
+	public static final String ALIPAY_WAP_MERCHANT_URL = BASE_URL + "/Alipay/merchant.jsp";
 	
 	public static final String PRIVATE = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMn4t2z0D4XKNVoZ"
 			+ "cAj6PVg0eazZmzu8qtmyaziiqVB5x3dus+Q5MBPh62JbX8zNV05/fnWHanOps1Bv"

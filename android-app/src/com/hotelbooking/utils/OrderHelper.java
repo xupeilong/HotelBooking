@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -29,13 +31,24 @@ public class OrderHelper {
 
 	private static final int SDK_CHECK_FLAG = 2;
 	
-	public static void orderByPage(Context context, 
+	public static String orderByAliWap(Context context, 
 			String name, String message, Hotel hotel, House house,
-			int count, Date checkinDate, Date checkoutDate)
+			int count, Date checkinDate, Date checkoutDate, String code, double cutFee)
 	{
+		String outTradeNo = getOutTradeNo();
+		String url = Const.AliPayWapURL;
+		url = url + "?WIDseller_email=" + Const.AliPaySellerAccount;
+		url = url + "&WIDout_trade_no=" + outTradeNo;
+		url = url + "&WIDsubject=" + URLEncoder.encode(getSubjectString(hotel, house, count, checkinDate, checkoutDate));
+		url = url + "&WIDtotal_fee=" + getTotalFee(house, count, checkinDate, checkoutDate, code, cutFee);
+		url = url + "&body=" + getBodyString(name, message, hotel, house, count, checkinDate, checkoutDate, code);
+		Log.d("urll", "wap url: " + url);
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		context.startActivity(intent);
+		return outTradeNo;
 	}
 	
-	public static void order(final Activity activity, final Handler handler,
+	public static void orderByAliSecure(final Activity activity, final Handler handler,
 			String name, String message, Hotel hotel, House house,
 			int count, Date checkinDate, Date checkoutDate, String code, double cutFee)
 	{
@@ -192,22 +205,22 @@ public class OrderHelper {
 	private static String getTotalFee(House house, int count, Date checkinDate, Date checkoutDate, String code, double cutFee)
 	{
 		DecimalFormat df = new DecimalFormat("0.00");
-		double fee = house.getPrice() * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
-		if (code != null)
-		{
-			fee = fee - cutFee;
-			if (fee <= 0)
-				fee = 0.01;
-		}
-		
-		// for test
-//		double fee = 0.01 * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
+//		double fee = house.getPrice() * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
 //		if (code != null)
 //		{
-//			fee = fee - 0.01;
+//			fee = fee - cutFee;
 //			if (fee <= 0)
 //				fee = 0.01;
 //		}
+		
+		// for test
+		double fee = 0.01 * count * DateFormater.getDiffDays(checkinDate, checkoutDate);
+		if (code != null)
+		{
+			fee = fee - 0.01;
+			if (fee <= 0)
+				fee = 0.01;
+		}
 		
 		return df.format(fee);
 		
