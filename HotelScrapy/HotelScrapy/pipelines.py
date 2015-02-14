@@ -79,13 +79,11 @@ class HouseInfoPipeline(object):
                 vv = cursor.fetchall()
                 if len(vv) > 0:
                     continue
-                v = [v[0], item['image_file_name']]
-                cursor.execute('insert into app_house_info(house_id, image_path) values(%s,%s)', v)
+                v = [hotel_id, v[0], item['image_file_name']]
+                cursor.execute('insert into app_house_info(hotel_id, house_id, image_path) values(%s,%s,%s)', v)
 
             conn.commit()
             cursor.close()
             conn.close()
             
         return item
-
-

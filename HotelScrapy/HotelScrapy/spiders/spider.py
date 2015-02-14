@@ -3,10 +3,12 @@ import scrapy
 import mysql.connector
 from HotelScrapy.items import HotelInfo
 from HotelScrapy.items import HouseInfo
+from HotelScrapy.settings import *
 from urllib import quote
 import re
 import json
 from scrapy.selector import Selector
+from scrapy import log
 import sys 
 reload(sys) 
 sys.setdefaultencoding('gbk') 
@@ -68,20 +70,37 @@ class DmozSpider(scrapy.Spider):
 
     to_do_hotel_list = []
 
+    
         
+    contyped = -2
 
     def start_requests(self):
+
+        # log.start(logfile='F:\HotelBooking\HotelScrapy\log.txt', logstdout=True)
+        # log.msg("This is a warning", level=log.WARNING)
+
+
+        index = 20
+
         conn = mysql.connector.connect(user='root', password='sdp123', database='hotel', use_unicode=True)
         cursor = conn.cursor()
         cursor.execute('select * from OrderProcess_hotel')
         # values = cursor.fetchall()
-        values = cursor.fetchmany(100)
-        cursor.fetchall()
+        while (index > 0):
+            values = cursor.fetchmany(30)
+            index = index - 1
+        try:
+            cursor.fetchall()
+        except Exception, e:
+            pass       
         for v in values:
+            print 'values = '
+            print len(values)
             #check repeat
             cursor.execute("select * from app_hotel_info where hotel_id = " + str(v[0]))
-            vv = cursor.fetchall()
-            if (len(vv) > 0):
+            vv_len = len(cursor.fetchall())
+
+            if (vv_len):
                 continue
             base = "http://hotels.ctrip.com/hotel/"
             name = v[1].encode('gbk')
@@ -104,11 +123,17 @@ class DmozSpider(scrapy.Spider):
                 continue
             if city.encode('utf-8') == '长白山':
                 continue
+            if city.encode('utf-8') == '四川':
+                continue
             name1 = name1.replace(city.encode('gbk'), '')
             name1 = name1.replace('\xbe\xc6\xb5\xea', '')
             name1 = name1.replace('\xbf\xec\xbd\xdd', '')
             city_name = city.replace(' ', '')
-            path = (v[0], base + self.city[city_name.encode('utf-8')] + "/k2" + quote(name1), city_name)
+            try:
+                path = (v[0], base + self.city[city_name.encode('utf-8')] + "/k2" + quote(name1), city_name)
+            except Exception, e:
+                continue
+                raise e
             self.to_do_hotel_list.append(path)
 
         for path in self.to_do_hotel_list:
@@ -206,13 +231,16 @@ class DmozSpider(scrapy.Spider):
         item['city_name'] = city_name
         yield item
 
-        house_list_url = 'http://hotels.ctrip.com/Domestic/tool/AjaxHotelRoomListForDetail.aspx?hotel=' + str(hotel_page_id)
-        req = scrapy.Request(house_list_url, callback=self.parse_house)
+        house_list_url = 'http://hotels.ctrip.com/Domestic/tool/AjaxHotelRoomListForDetail.aspx?hotel=' + str(hotel_page_id) + '&contyped=' + str(self.contyped)
+        req = scrapy.Request(house_list_url, headers = HEADERS, cookies = COOKIES, callback=self.parse_house)
         req.meta['hotel_id'] = hotel_id
         yield req
 
+
     def parse_house(self, response):
-        hotel_id = response.meta['hotel_id']        
+        hotel_id = response.meta['hotel_id']     
+        # print "body:**"
+        # print response.body
         obj = json.loads(response.body, "gbk")
         html = obj['html']
         rooms = Selector(text=html).xpath('//td[@class="room_type"]')
@@ -230,9 +258,3 @@ class DmozSpider(scrapy.Spider):
             item['house_name'] = room_name
             item['hotel_id'] = hotel_id
             yield item
-        
-
-
-
-
-       
